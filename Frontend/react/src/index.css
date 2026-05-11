@@ -109,3 +109,32 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+
+
+
+.dropdown-menu-dark {
+    background-color: #1f1f1f !important;
+}
+
+.dropdown-menu-dark .dropdown-item,
+.dropdown-menu-dark .dropdown-item.active,
+.dropdown-menu-dark .dropdown-item:active,
+.dropdown-menu-dark .dropdown-item:focus {
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #ffffff !important;
+}
+
+
+.dropdown-menu-dark .dropdown-item:hover {
+    background-color: #333333 !important;
+    color: #ffffff !important;
+}
+
+
+.nav-link:focus, .dropdown-toggle:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
