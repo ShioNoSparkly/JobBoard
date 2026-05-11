@@ -2,7 +2,7 @@
 // Candidature e Stati
 // controllers/applicationController.js
 
-const applicationService = require('../../services/applicationService');
+const applicationService = require('../services/applicationService');
 
 // Il Candidato invia una candidatura
 const apply = async (req, res) => {

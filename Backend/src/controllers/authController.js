@@ -2,7 +2,7 @@
 // Registrazione e Ruoli
 //
 
-const authService = require('../../services/authService');
+const authService = require('../services/authService');
 
 const register = async (req, res) => {
     try {
