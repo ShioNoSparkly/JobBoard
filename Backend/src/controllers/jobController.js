@@ -2,7 +2,7 @@
 // Gestione Annunci
 // controller gestisce la creazione e la visualizzazione degli annunci
 
-const db = require('./config/db'); // Il tuo file di connessione al database
+const db = require('../config/db'); // Il tuo file di connessione al database
 
 exports.getAllJobs = async (req, res) => {
     try {
