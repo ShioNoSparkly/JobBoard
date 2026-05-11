@@ -1,15 +1,34 @@
 import { useNavigate } from 'react-router-dom';
-
+import { RiCloseCircleLine } from "react-icons/ri"
+import { useState } from 'react';
+import ModalDelete from './ModalDelete';
 
 function JobCard({ job }) {
 
   const navigate = useNavigate();
-
+const [users , setUsers] = useState([])
+const [showModal, setShowModal] = useState(false);
+const handleConfirm = () => {
+    onDelete(id);
+    setShowModal(false);
+  };
 
   return (
+
     <div className="col-md-6 col-lg-4">
-      <div className="card h-100 border-0 shadow rounded-4">
-        <div className="card-body d-flex flex-column">   
+      <div className="card h-100 border-0 shadow rounded-4 position-relative">
+        {users.role !== 'azienda' &&(
+        <div className='d-flex justify-content-end'>
+        <button className='position-absolute bg-transparent text-danger border-0 fs-2 btn-elimina' 
+      onClick={() => setShowModal(true)}><RiCloseCircleLine /></button>
+      <ModalDelete isOpen={showModal}
+        onConfirm={handleConfirm}
+        onCancel={() => setShowModal(false)}/>
+      </div>
+      )}
+
+
+        <div className="card-body d-flex flex-column"> 
           <h4 className="fw-bold mb-3">
             {job.title}
           </h4>
@@ -37,7 +56,7 @@ function JobCard({ job }) {
               {job.salary}
             </strong>
 
-            <button className="btn btn-primary btn-sm" onClick={() => navigate(`/jobs/${job.id}`)}>
+            <button className="btn btn-primary btn-sm" onClick={() => navigate(`/jobs/${job.id}`, { state: job})}>
               Dettagli
             </button>
           </div>
