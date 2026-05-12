@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 function Loginpage() {
 
@@ -12,7 +14,25 @@ function Loginpage() {
          email,
          password
       });
-   }
+
+let user;
+
+ if(email === 'company@gmail.com'){
+         user = {
+            role: 'company'
+         };
+      }else{
+         user = {
+            role: 'user'
+         };
+      }
+      if(user.role === 'company'){
+         navigate('/company');
+      }else{
+         navigate('/user');
+      }
+   };
+
    return (
       <>
          <div className="container py-5">

@@ -1,10 +1,18 @@
 import { useParams, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ModalDelete from '../components/ModalDelete';
 import ModalCandidate from '../components/ModalCandidate';
+import { SiGooglemaps } from "react-icons/si";
+import { MdOutlineEuro } from "react-icons/md";
+import { MdWorkHistory } from "react-icons/md";
+import { GrNotes } from "react-icons/gr";
+import { AiFillStar } from "react-icons/ai";
 
 
 function JobDetailsPage() {
+    const [jobs, setJobs]= useState([])
+
+
     const { id } = useParams()
     const location = useLocation()
     let job = location.state
@@ -25,20 +33,16 @@ function JobDetailsPage() {
         setError([]);
         if (!coverLetter.trim()) {
             errorText = 'Devi inserire una lettera di presentazione';
-
         }
         if (!cvFile) {
             errorFile = 'Non è stato inserito nessun file allegato';
-
         }
         if (errorText || errorFile) {
             let errors = []
             errors.push(errorText)
             errors.push(errorFile)
-
             return setError(errors)
         }
-
 
         console.log({
             jobId: job.id,
@@ -48,17 +52,17 @@ function JobDetailsPage() {
 
         setShowCandidateModal(false);
 
-        // reset campi
+       
         setCoverLetter('');
         setCvFile(null);
 
-        // apre modale successo
+      
         setShowSuccessModal(true);
 
-        // chiusura automatica dopo 2.5 sec
+     
         setTimeout(() => {
             setShowSuccessModal(false);
-        }, 2500);
+        }, 3000);
 
 
 
@@ -81,6 +85,36 @@ function JobDetailsPage() {
 
     };
 
+//     useEffect(() => {
+//     const fetchJobs = async () => {
+//         try {
+//             const response = await axios.get(
+//                 'http://localhost:3000/jobs'
+//             );
+//             setJobs(response.data);
+//         } catch (error) {
+//         }
+//     };
+//     fetchJobs();
+// }, []);
+
+const handleShare = async () => {
+
+    try {
+
+        await navigator.share({
+            title: job.title,
+            text: `Guarda questa offerta di lavoro: ${job.title}`,
+            url: window.location.href
+        });
+
+    } catch (error) {
+
+        console.log('Condivisione annullata');
+
+    }
+};
+
     if (!job) {
         job = jobs.find(j => j.id === Number(id));
     }
@@ -102,13 +136,14 @@ function JobDetailsPage() {
                 <div className="row g-4 align-items-stretch">
                     <div className="col-lg-8 d-flex flex-column gap-4">
                         <div className="card shadow-sm border-0 p-4">
-                            <h1 className="fw-bold">{job.title}</h1>
-                            <p>📍 {job.city}</p>
-                            <p>💼 {job.contract_type}</p>
-                            <p>💰 {job.salary}</p>
+                            <h1 className="fw-bold mb-5">{job.title}</h1>
+                            <p><SiGooglemaps className='fs-5 text-danger mb-1 mx-2'/> {job.city}</p>
+                            <p><MdWorkHistory className='fs-5 text-primary mb-1 mx-3'/>{job.contract_type}</p>
+                            <p><MdOutlineEuro className='fs-5 text-success mb-1 mx-2' /> {job.salary}</p>
                         </div>
-                        <div className="card shadow-sm border-0 p-4 flex-grow-1">
-                            <h4>Descrizione lavoro</h4>
+                        <div className="card shadow-sm border-0 p-4 flex-grow-1 align-items-center">
+                            <GrNotes className='fs-2 text-primary mb-4 mx-2' />
+                            <h4  className="fw-semibold mb-5">Descrizione lavoro</h4>
                             <p>{job.description}</p>
                         </div>
                     </div>
@@ -145,12 +180,14 @@ function JobDetailsPage() {
                             )}
 
                             <button className="btn btn-outline-secondary w-100 mb-2">
-                                Aggiungi annuncio ai preferiti
+                                Aggiungi ai preferiti <AiFillStar className='mb-1' />
                             </button>
-                            <button className="btn btn-outline-dark w-100">
-                                Condividi
+
+                            <button className="btn btn-outline-dark w-100"  
+                            onClick={handleShare}>Condividi
                             </button>
                             <hr />
+
                             <small className="text-muted">
                                 Pubblicato recentemente • 10 candidati
                             </small>
