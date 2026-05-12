@@ -10,7 +10,7 @@ import UserPage from './pages/UserPage'
 
 import { useState } from 'react'
 
-import './App.css'
+import "./App.css";
 
 function App() {
 
@@ -28,7 +28,7 @@ function App() {
         </Route>
       </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

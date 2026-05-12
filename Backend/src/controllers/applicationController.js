@@ -17,13 +17,17 @@ const apply = async (req, res) => {
             cover_letter
         );
 
-        res.status(201).json({
-            message: "Candidatura inviata con successo",
-            data: newApplication
-        });
+        res
+            .status(201)
+            .json({
+                message: "Candidatura inviata con successo",
+                data: newApplication
+            });
     } catch (err) {
         // Gestiamo errori tipo "Ti sei già candidato" (400) o "Job non trovato" (404)
-        res.status(err.statusCode || 500).json({ error: err.message });
+        res
+            .status(err.statusCode || 500)
+            .json({ error: err.message });
     }
 };
 
@@ -40,14 +44,17 @@ const updateStatus = async (req, res) => {
             companyId
         );
 
-        res.json({
-            message: "Stato candidatura aggiornato",
-            data: updatedApplication
-        });
+        res
+            .json({
+                message: "Stato candidatura aggiornato",
+                data: updatedApplication
+            });
     } catch (err) {
         // Gestiamo l'errore "Non autorizzato" se l'azienda prova a modificare 
         // una candidatura di un annuncio non suo
-        res.status(err.statusCode || 403).json({ error: err.message });
+        res
+            .status(err.statusCode || 403)
+            .json({ error: err.message });
     }
 };
 
@@ -55,14 +62,43 @@ const updateStatus = async (req, res) => {
 const getMyApplications = async (req, res) => {
     try {
         const applications = await applicationService.getCandidateApplications(req.user.id);
-        res.json(applications);
+        res
+            .json(applications);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res
+            .status(500)
+            .json({ error: err.message });
+    }
+};
+
+const getApplicationsByJob = async (req, res) => {
+    try {
+        const { jobId } = req.params;
+        const companyId = req.user.id; // passato da autenticato
+
+        const applications = await applicationService.getApplicationsByJob(
+            jobId,
+            companyId
+        );
+
+        res
+            .json({
+                successo: true,
+                data: applications
+            });
+    } catch (err) {
+        res
+            .status(err.statusCode || 500)
+            .json({
+                successo: false,
+                errore: err.message
+            });
     }
 };
 
 module.exports = {
     apply,
     updateStatus,
-    getMyApplications
+    getMyApplications,
+    getApplicationsByJob
 };

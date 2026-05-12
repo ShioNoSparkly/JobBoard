@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 
 
 function Loginpage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-   const [email, setEmail] = useState('');
-   const [password, setPassword] = useState('')
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
    const handleSubmit = (e) => {
       e.preventDefault();
@@ -77,9 +79,11 @@ let user;
                   </div>
                </div>
             </div>
-         </div>
-      </>
-   )
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default Loginpage;

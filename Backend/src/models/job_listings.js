@@ -52,6 +52,7 @@ const findByFilters = (city, contract_type) =>
     [city, contract_type],
   );
 
+// INICIO EXTRA
 // Ricerca per parola chiave nel titolo ·
 const findByKeyword = (keyword) =>
   pool.query(
@@ -71,11 +72,12 @@ const findByKeyword = (keyword) =>
   );
 
 //Salva offerta nei preferiti · ----------------------------------
-const saveToFavorites = (user_id, job_id) =>
-  pool.query(
-    `INSERT INTO favorites (candidate_id, job_id)    VALUES ($1, $2) RETURNING *`,
-    [user_id, job_id],
-  );
+//const saveToFavorites = (user_id, job_id) =>
+//  pool.query(
+//    `INSERT INTO favorites (candidate_id, job_id)    VALUES ($1, $2) RETURNING *`,
+//    [user_id, job_id],
+//  );
+// FINAL EXTRA
 
 // Profilo azienda con tutte le offerte attive
 const findCompanyProfile = (company_id) =>
@@ -114,7 +116,7 @@ const create = ({
     [company_id, title, description, contract_type, city, salary],
   );
 
-// uPDATE job listing
+// UPDATE job listing
 const update = (id, { title, description, contract_type, city, salary }) =>
   pool.query(
     `UPDATE job_listings
@@ -135,9 +137,11 @@ const remove = (id) =>
 module.exports = {
   init,
   findAll,
-  findById,
+  findByFilters,
+  findByKeyword,
+  //saveToFavorites,
+  findCompanyProfile,
+  update,
   create,
-  restituisci,
-  aggiornaRitardi,
   remove,
 };

@@ -13,7 +13,7 @@ const CREATE_TABLE = `
 
 const init = () => pool.query(CREATE_TABLE);
 
-findAll = () => {
+const findAll = () => {
   return pool.query(
     `SELECT             
         p.*,
