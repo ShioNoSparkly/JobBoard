@@ -10,9 +10,8 @@ const CREATE_TABLE = `
     title           VARCHAR(255)    NOT NULL,
     description     TEXT            NOT NULL,
     contract_type   VARCHAR(100)    NOT NULL,
-
-	city            varchar(150)    NOT NULL,
-	salary          Numeric(10,2)   NOT NULL,
+    city            varchar(150)    NOT NULL,
+	  salary          Numeric(10,2)   NOT NULL,
     created_at      TIMESTAMPTZ     NOT NULL DEFAULT NOW()
   );    
 `;
