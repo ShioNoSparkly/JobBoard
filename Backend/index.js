@@ -5,8 +5,9 @@ const app = express();
 
 // Importa le rotte
 const jobRoutes = require('./src/routes/jobRoutes');
+const userRoutes = require('./src/routes/users.routes');
 // const authRoutes = require('./src/routes/authRoutes');
-// const applicationRoutes = require('./src/routes/applicationRoutes');
+const applicationRoutes = require('./src/routes/application.routes');
 
 // Middleware per leggere il formato JSON 
 app.use(express.json());
@@ -19,8 +20,8 @@ app.use((req, res, next) => {
 
 // Monta le rotte con il prefisso /api
 app.use('/api/jobs', jobRoutes);
-// app.use('/api/auth', authRoutes);
-// app.use('/api/applications', applicationRoutes);
+app.use('/api/auth', userRoutes);
+app.use('/api/applications', applicationRoutes);
 
 // Gestione rotte non trovate
 app.use((req, res) => {

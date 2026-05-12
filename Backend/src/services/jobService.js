@@ -1,7 +1,7 @@
 
 // Gestisce la creazione degli annunci e la logica di visibilità.
 
-const Job = require('../models/Job');
+const Job = require('../models/job_listings');
 
 const createJob = async (elencoJob, companyId) => {
     return await Job.create({ ...elencoJob, company_id: companyId });

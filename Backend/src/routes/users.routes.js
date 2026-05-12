@@ -5,12 +5,15 @@
 const router = require("express").Router();
 const { body, param } = require("express-validator");
 const validate = require("../middleware/validate");
-const controller = require("../controller/authController");
+
+const controller = require("../controllers/authController");
+
 const {
   autenticato,
   soloAzienda,
   soloSéOAzienda,
 } = require("../middleware/auth");
+
 const limiter = require("express-rate-limit");
 
 const limiterAuth = limiter({
@@ -23,13 +26,16 @@ const limiterAuth = limiter({
 });
 
 // ── Route pubbliche (senza autenticazione) ────────────────────
-router.post(
-  "/registra",
+router.post("/registra",
   limiterAuth,
   validate,
   controller.register,
 );
-router.post("/login", limiterAuth, validate, controller.login);
+
+router.post("/login",
+  limiterAuth,
+  validate,
+  controller.login);
 
 // Solo azienda può eliminare un utente
 //router.delete("/:id", autenticato, soloAzienda, validate, controller.elimina);
