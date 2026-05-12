@@ -26,7 +26,6 @@ const limiterAuth = limiter({
 router.post(
   "/registra",
   limiterAuth,
-  soloSéOAzienda,
   validate,
   controller.register,
 );
