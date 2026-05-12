@@ -1,72 +1,70 @@
-import JobCard from '../components/JobCard'
+import JobCard from "../components/JobCard";
 
 function Jobspage() {
-   // const [jobs, setJobs] = useState([]);
+  // const [jobs, setJobs] = useState([]);
 
-   //    useEffect(() => {
-   //   axios.get('/jobs')
-   //     .then(res => setJobs(res.data));
-   // }, []);
+  //    useEffect(() => {
+  //   axios.get('/jobs')
+  //     .then(res => setJobs(res.data));
+  // }, []);
 
+  const jobs = [
+    {
+      id: 1,
+      company_id: 101,
+      title: "Frontend Developer",
+      description: "Cerchiamo uno sviluppatore React motivato.",
+      contract_type: "Full Time",
+      city: "Milano",
+      salary: "30000€",
+    },
 
-   const jobs = [
-      {
-         id: 1,
-         company_id: 101,
-         title: 'Frontend Developer',
-         description: 'Cerchiamo uno sviluppatore React motivato.',
-         contract_type: 'Full Time',
-         city: 'Milano',
-         salary: '30000€'
-      },
+    {
+      id: 2,
+      company_id: 102,
+      title: "Backend Developer",
+      description: "Esperienza con Node.js e PostgreSQL.",
+      contract_type: "Part Time",
+      city: "Roma",
+      salary: "28000€",
+    },
 
-      {
-         id: 2,
-         company_id: 102,
-         title: 'Backend Developer',
-         description: 'Esperienza con Node.js e PostgreSQL.',
-         contract_type: 'Part Time',
-         city: 'Roma',
-         salary: '28000€'
-      },
+    {
+      id: 3,
+      company_id: 103,
+      title: "UI/UX Designer",
+      description: "Esperienza con Figma richiesta.",
+      contract_type: "Hybrid",
+      city: "Torino",
+      salary: "32000€",
+    },
+  ];
 
-      {
-         id: 3,
-         company_id: 103,
-         title: 'UI/UX Designer',
-         description: 'Esperienza con Figma richiesta.',
-         contract_type: 'Hybrid',
-         city: 'Torino',
-         salary: '32000€'
-      }
-   ];
+  return (
+    <>
+      <section className="hero-section d-flex align-items-center py-5 bg-img-2">
+        <div className= "overlay z-0"></div>
+          <div className="container py-5 position-relative">
+            <h1 className="display-3 fw-bold mb-3 text-dark z-1">
+              Trova il lavoro perfetto
+            </h1>
+            <p className="lead text-dark fw-bold">
+              Scopri le migliori offerte disponibili.
+            </p>
+          </div>
+      </section>
 
-   return (
-      <>
-         <section className="bg-dark text-white py-5">
-            <div className="container py-5">
-               <h1 className="display-3 fw-bold mb-3">
-                  Trova il lavoro perfetto
-               </h1>
-               <p className="lead">
-                  Scopri le migliori offerte disponibili.
-               </p>
-            </div>
-         </section>
-
-
-         <section className="py-5 bg-light">
-            <div className="container">
-               <div className="row g-4">
-                  {jobs.map((job) => (
-                     <JobCard key={job.id} job={job} />
-                  ))}
-               </div>
-            </div>
-         </section>
-      </>
-   );
+      <section className="py-5 bg-light">
+        <div className="container">
+          <div className="row g-4">
+            {jobs.map((job) => (
+              <JobCard key={job.id} job={job} />
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
 }
 
-
-export default Jobspage
+export default Jobspage;

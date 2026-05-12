@@ -3,6 +3,12 @@ import { FaSearch } from "react-icons/fa";
 import { AiFillStar } from "react-icons/ai";
 import logo from "../assets/logo.webp";
 
+
+
+
+
+
+
 function Navbar() {
   return (
     <>
@@ -93,9 +99,9 @@ function Navbar() {
               >
                 <FaSearch style={{ fontSize: "0.8rem" }} />
               </button>
-              <button className="btn btn-sm btn-outline-primary" type="button">
+              <NavLink to="/login" className="btn btn-sm btn-outline-primary" type="button">
                 Login
-              </button>
+              </NavLink>
             </form>
           </div>
         </div>
