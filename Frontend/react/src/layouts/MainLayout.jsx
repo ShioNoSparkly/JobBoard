@@ -1,29 +1,24 @@
-import {Outlet} from 'react-router-dom'
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
-import Loginpage from "../pages/Loginpage"
-import Registerpage from "../pages/RegisterPage"
-import Jobspage from "../pages/Jobspage"
+import { Outlet } from 'react-router-dom';
 
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 function MainLayout() {
-    return (
-        <>
+  return (
+    <div className="d-flex flex-column min-vh-100">
 
-            <header>
-                <Navbar />
-            </header>
+      <header>
+        <Navbar />
+      </header>
 
+      <main className="flex-grow-1">
+        <Outlet />
+      </main>
 
-            <main>
-<Outlet/>
-            </main>
-            <div>
-                <Footer />
-            </div>
+      <Footer />
 
-        </>
-    )
+    </div>
+  );
 }
 
-export default MainLayout
+export default MainLayout;
