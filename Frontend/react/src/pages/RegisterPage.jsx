@@ -37,7 +37,7 @@ function RegisterPage() {
                         />
                       </div>
 
-                                            <div className="col-md-6 mb-3">
+                      <div className="col-md-6 mb-3">
                         <label className="form-label fs-5">Password</label>
                         <input
                           type="password"
@@ -57,17 +57,36 @@ function RegisterPage() {
                           placeholder="Inserisci nome"
                         />
                       </div>
-
-
                       <div className="col-md-6 mb-3">
-                        <label className="form-label fs-5">Ruolo</label>
-                        <input
-                          type="text"
-                          className="form-control form-control-lg"
-                          value={ruolo}
-                          onChange={(e) => setRuolo(e.target.value)}
-                          placeholder="Inserisci ruolo"
-                        />
+                        <label className="form-label d-block fs-5">Ruolo</label>
+                        <div className="form-check form-check-inline">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            id="scelta1"
+                            name="gruppo"
+                            value="1"
+                            checked={ruolo === "1"}
+                            onChange={(e) => setRuolo(e.target.value)}
+                          />
+                          <label className="form-check-label" htmlFor="Azienda">
+                            Azienda
+                          </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            id="scelta2"
+                            name="gruppo"
+                            value="2"
+                            checked={ruolo === "2"}
+                            onChange={(e) => setRuolo(e.target.value)}
+                          />
+                          <label className="form-check-label" htmlFor="Candidato">
+                            Candidato
+                          </label>
+                        </div>
                       </div>
                     </div>
                     <button
