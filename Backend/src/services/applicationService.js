@@ -2,8 +2,8 @@
 // Gestisce l'invio delle candidature e i cambi di stato.
 // 
 
-const Application = require('../models/Application');
-const Job = require('../models/Job');
+const Application = require('../models/applications');
+const Job = require('../models/job_listings');
 
 // per rispondere ad un annuncio job
 const applyToJob = async (candidateId, jobId, coverLetter) => {
@@ -30,7 +30,7 @@ const applyToJob = async (candidateId, jobId, coverLetter) => {
         candidate_id: candidateId,
         job_id: jobId,
         cover_letter: coverLetter,
-        status: 'pending'
+        status: 'inviata'
     });
 };
 
@@ -63,8 +63,26 @@ const getCandidatoApplications = async (candidateId) => {
     return await Application.findByCandidateId(candidateId);
 };
 
+
+const getApplicationsByJob = async (jobId, companyId) => {
+    // Verifichiamo prima che l'annuncio appartenga all'azienda
+    //
+    const job = await Job.findById(jobId);
+    if (!job || job.company_id !== companyId) {
+        const err = new Error("Non autorizzato o annuncio non trovato");
+        err.statusCode = 403;
+        throw err;
+    }
+
+    // ritorna al model per prendere i candidati
+    return await Application.findByJobId(jobId);
+};
+
+
+
 module.exports = {
     applyToJob,
     updateApplicationStatus,
-    getCandidatoApplications
+    getCandidatoApplications,
+    getApplicationsByJob
 };

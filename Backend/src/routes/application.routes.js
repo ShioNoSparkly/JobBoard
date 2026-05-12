@@ -5,8 +5,10 @@
 const router = require("express").Router();
 const { body, param } = require("express-validator");
 const validate = require("../middleware/validate");
-const { autenticato, soloAzienda } = require("../middleware/auth");
+
 const controller = require("../controllers/applicationController");
+
+
 
 const {
   autenticato,
@@ -14,24 +16,22 @@ const {
   soloCandidato,
 } = require("../middleware/auth");
 
+console.log("LOG: Il file applicationRoutes è stato caricato!");
+
 const regolaId = [
   param("id")
     .isInt({ min: 1 })
     .withMessage("L'id deve essere un numero intero positivo"),
 ];
 
-router.post(
-  "/apply",
+router.post('/apply',
   autenticato,
   soloCandidato,
   validate,
   controller.apply,
 );
 
-
-
-router.patch(
-  "/:id/status",
+router.patch('/:id/status',
   autenticato,
   soloAzienda,
   regolaId,
@@ -39,8 +39,7 @@ router.patch(
   controller.updateStatus,
 );
 
-router.get(
-  "/job/:jobId",
+router.get('/job/:jobId',
   autenticato,
   soloAzienda,
   validate,
