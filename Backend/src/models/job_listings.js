@@ -114,7 +114,7 @@ const create = ({
     [company_id, title, description, contract_type, city, salary],
   );
 
-// uPDATE job listing
+// UPDATE job listing
 const update = (id, { title, description, contract_type, city, salary }) =>
   pool.query(
     `UPDATE job_listings
