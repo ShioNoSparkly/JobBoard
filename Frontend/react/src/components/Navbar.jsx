@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
+import { AiFillStar } from "react-icons/ai";
+import logo from "../assets/logo.webp";
 
 function Navbar() {
   return (
@@ -7,7 +9,7 @@ function Navbar() {
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
           <NavLink className="navbar-brand" to="#">
-            Navbar
+            <img src={logo} alt="Logo Jobboard" style={{ width: "110px" }} />
           </NavLink>
           <button
             className="navbar-toggler"
@@ -38,7 +40,7 @@ function Navbar() {
                   Città
                 </NavLink>
 
-                <ul className="dropdown-menu dropdown-menu-dark shadow border-0 text-center w-75 mx-auto w-lg-auto">
+                <ul className="dropdown-menu dropdown-menu-dark shadow border-0 text-center w-75 mx-auto w-lg-auto mb-2">
                   <li>
                     <NavLink className="dropdown-item" to="#">
                       Milano
@@ -68,10 +70,16 @@ function Navbar() {
               </li>
             </ul>
             <form
-              className="d-flex mx-auto ms-lg-auto me-lg-0 mt-2 mt-lg-0"
+              className="d-flex mx-auto ms-lg-auto me-lg-0 mt-2 mt-lg-0 mb-2"
               role="search"
               style={{ width: "fit-content" }}
             >
+              <button
+                className="btn btn-sm btn-outline-primary mx-2"
+                type="button"
+              >
+                <AiFillStar className="mb-1" />
+              </button>
               <input
                 className="form-control form-control-sm me-2"
                 type="search"
@@ -86,7 +94,7 @@ function Navbar() {
                 <FaSearch style={{ fontSize: "0.8rem" }} />
               </button>
               <button className="btn btn-sm btn-outline-primary" type="button">
-                LogIn
+                Login
               </button>
             </form>
           </div>
