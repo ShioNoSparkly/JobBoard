@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { AiFillStar } from "react-icons/ai";
 import logo from "../assets/logo.webp";
-
+import { useState } from "react";
 
 
 
@@ -10,6 +10,10 @@ import logo from "../assets/logo.webp";
 
 
 function Navbar() {
+const [user, setUser]= useState(null)
+ 
+const logout = () => {setUser(null);};
+
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -99,9 +103,21 @@ function Navbar() {
               >
                 <FaSearch style={{ fontSize: "0.8rem" }} />
               </button>
-              <NavLink to="/login" className="btn btn-sm btn-outline-primary" type="button">
-                Login
-              </NavLink>
+              {user ? (
+                <button
+                  className="btn btn-sm btn-outline-danger"
+                  onClick={logout}
+                >
+                  Esci
+                </button>
+              ) : (
+                <NavLink
+                  to="/login"
+                  className="btn btn-sm btn-outline-primary"
+                >
+                  Accedi
+                </NavLink>
+              )}
             </form>
           </div>
         </div>

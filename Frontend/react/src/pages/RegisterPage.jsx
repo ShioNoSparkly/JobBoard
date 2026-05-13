@@ -135,7 +135,7 @@ function RegisterPage() {
                         )}
                       </div>
                       <div className="col-md-6 mb-3">
-                        <label className="form-label d-block fs-5">Ruolo</label>
+                        <label className="form-label d-block fs-5 mb-4">Ruolo</label>
                         <div className="form-check form-check-inline">
                           <input
                             className="form-check-input"

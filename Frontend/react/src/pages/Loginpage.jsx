@@ -46,7 +46,6 @@ const navigate = useNavigate()
 
 
       if (foundEmail && foundPsw) {
-
          if (foundEmail.role === 'azienda') {
             navigate('/company');
          } else {
