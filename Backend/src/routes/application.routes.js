@@ -52,6 +52,12 @@ router.get('/job/:jobId',
   controller.getApplicationsByJob,
 );
 
+router.get('/mine',
+  autenticato,
+  soloCandidato,
+  controller.getMyApplications
+);
+
 // Tutte le routes
 
 module.exports = router;

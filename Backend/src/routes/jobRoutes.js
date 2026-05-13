@@ -1,12 +1,22 @@
 
-
+// le rotte per i JOB
 
 const express = require('express');
 const router = express.Router();
 
-const { body, param, query } = require("express-validator");
 const validate = require("../middleware/validate");
 const jobController = require('../controllers/jobController');
+
+const {
+    body,
+    param,
+    query
+} = require("express-validator");// questo sfrutta i controlli di Express.js
+
+const {
+    regoleJob,
+    regolaId
+} = require("../middleware/jobValidator");
 
 const {
     autenticato,
@@ -14,15 +24,6 @@ const {
     soloCandidato,
 } = require("../middleware/auth");
 
-
-// Ivalidatore dei campi da middlware
-//const { regoleJob } = require("../middleware/jobValidator");
-
-const regolaId = [
-    param("id")
-        .isInt({ min: 1 })
-        .withMessage("L'id deve essere un numero intero positivo"),
-];
 
 console.log("Ciao dal router job")
 
@@ -36,17 +37,38 @@ console.log("Ciao dal router job")
 //    next();
 // }, jobController.createJob);
 
+
+// GET /api/jobs — Lista di tutti gli annunci
 router.get("/",
     autenticato,
     jobController.getAllJobs
 );
 
+// POST /api/jobs — Creazione singolo annuncio
 router.post("/",
     autenticato,
     soloAzienda,
-    //  regoleJob,
+    regoleJob,
     validate,
     jobController.createJob
 );
+
+// PUT /api/jobs/:id — Modifica annuncio (Protetta da ID valido e ruolo Azienda)
+router.put("/:id",
+    autenticato,
+    soloAzienda,
+    regolaId,
+    regoleJob,
+    validate,
+    jobController.updateJob);
+
+// DELETE /api/jobs/:id — Cancellazione annuncio (Protetta da ID valido e ruolo Azienda)
+router.delete("/:id",
+    autenticato,
+    soloAzienda,
+    regolaId,
+    validate,
+    jobController.deleteJob);
+
 
 module.exports = router;

@@ -44,10 +44,27 @@ const deleteJob = async (jobId, companyId) => {
     return result.rows[0];
 };
 
+const updateJob = async (jobId, jobData, companyId) => {
+    // Recupera il job (errore 404 se non esiste da getJobById)
+    const job = await getJobById(jobId);
+
+    // controlliamo se l'azienda è la proprietaria?
+    if (job.company_id !== companyId) {
+        const err = new Error("Non sei autorizzato a modificare questo annuncio");
+        err.statusCode = 403;
+        throw err;
+    }
+
+    // facciamo update passando i dati puliti al model
+    const result = await Job.update(jobId, jobData);
+    return result.rows[0]; // Ritorna l'oggetto aggiornato dal DB
+};
+
 module.exports = {
     createJob,
     getJobById,
     getJobsPerCompany,
     getAllJobs,
-    deleteJob
+    deleteJob,
+    updateJob
 };

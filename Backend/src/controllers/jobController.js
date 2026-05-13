@@ -63,7 +63,8 @@ const getAllJobs = async (req, res) => {
 // Elimina un annuncio (Solo azienda proprietaria)
 const deleteJob = async (req, res) => {
     try {
-        const jobId = parseInt(req.params.id, 10);
+        const { id } = req.params;
+        // const jobId = parseInt(req.params.id, 10); ulteriore controllo su id che sia un intero
         const companyId = req.user.id;
 
         await jobService.deleteJob(jobId, companyId);
@@ -79,9 +80,33 @@ const deleteJob = async (req, res) => {
     }
 };
 
+// Aggiorna un annuncio esistente
+const updateJob = async (req, res) => {
+    try {
+        const { id } = req.params;
+        //const jobId = parseInt(req.params.id, 10);  ulteriore controllo su id che sia un intero
+        const companyId = req.user.id; // Preso sempre dal token JWT
+
+        // Il service verificherà la proprietà dell'annuncio prima di aggiornare nel model
+        const updatedJob = await jobService.updateJob(jobId, req.body, companyId);
+
+        res.json({
+            successo: true,
+            message: "Annuncio modificato con successo",
+            data: updatedJob
+        });
+    } catch (err) {
+        res.status(err.statusCode || 500).json({
+            successo: false,
+            error: err.message
+        });
+    }
+};
+
 module.exports = {
     createJob,
     getJobById,
     getAllJobs,
-    deleteJob
+    deleteJob,
+    updateJob
 };
