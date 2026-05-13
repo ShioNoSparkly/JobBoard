@@ -1,7 +1,7 @@
 
-// validatore per campi job
+// validatore per campi per job e formato per id
 
-const { body } = require('express-validator');
+const { body, param } = require('express-validator');
 
 const regoleJob = [
     body('title').trim().notEmpty().withMessage('Il titolo è richiesto'),
@@ -13,4 +13,9 @@ const regoleJob = [
         .withMessage('Lo stipendio deve essere un valore numerico (RAL)')
 ];
 
-module.exports = { regoleJob };
+const regolaId = [
+    param("id").isInt({ min: 1 }).withMessage("L'id deve essere un numero intero positivo")
+];
+
+module.exports = { regoleJob, regolaId };
+

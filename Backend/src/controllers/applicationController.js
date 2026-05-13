@@ -65,13 +65,20 @@ const updateStatus = async (req, res) => {
 // Il Candidato vede le sue candidature
 const getMyApplications = async (req, res) => {
     try {
-        const applications = await applicationService.getCandidateApplications(req.user.id);
-        res
-            .json(applications);
+        const candidateId = req.user.id; // Estratto dal token JWT (Candidato)
+
+        // Chiamiamo la funzione nel service
+        const applications = await applicationService.getCandidatoApplications(candidateId);
+
+        res.json({
+            successo: true,
+            data: applications
+        });
     } catch (err) {
-        res
-            .status(500)
-            .json({ error: err.message });
+        res.status(err.statusCode || 500).json({
+            successo: false,
+            errore: err.message
+        });
     }
 };
 
