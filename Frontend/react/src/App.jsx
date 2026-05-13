@@ -18,6 +18,8 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<MainLayout />}>
+
+        
           <Route index element={<Jobspage />} />
           <Route path='login' element={<Loginpage />} />
           <Route path="/register" element={<RegisterPage />} />
