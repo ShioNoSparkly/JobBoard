@@ -10,7 +10,8 @@ import {
     Form,
     Button,
     Table,
-    Badge
+    Badge,
+    Modal
 } from 'react-bootstrap';
 
 
@@ -25,6 +26,13 @@ const CompanyPage = () => {
 
     const [showModal, setShowModal] = useState(false);
     const [selectedCandidate, setSelectedCandidate] = useState(null);
+
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+    const [showForm, setShowForm] = useState(true);
+
+    const [error, setError] = useState('');
+
     const [filters, setFilters] = useState({
         search: '',
         status: '',
@@ -36,9 +44,7 @@ const CompanyPage = () => {
         setShowModal(true);
     };
 
-    const handleClose = () => {
-        setShowModal(false);
-    };
+    const handleClose = () => { setShowModal(false) };
 
     const [newJob, setNewJob] = useState({
         title: '',
@@ -49,17 +55,33 @@ const CompanyPage = () => {
     });
 
     const handleChange = (e) => {
-        setNewJob({
-            ...newJob,
-            [e.target.name]: e.target.value
-        });
-    };
+        setNewJob({ ...newJob, [e.target.name]: e.target.value });
+    }
 
     const handleCreateJob = () => {
-        console.log("NUOVO ANNUNCIO:", newJob);
 
-        alert("Annuncio creato con successo!");
+        // VALIDAZIONE
+        if (
+            !newJob.title.trim() ||
+            !newJob.description.trim() ||
+            !newJob.city.trim() ||
+            !newJob.contract_type.trim() ||
+            !newJob.salary.trim()
+        ) {
+            setError('Tutti i campi sono obbligatori');
+            return;
+        }
 
+        // RESET ERRORE
+        setError('');
+
+        // NUOVO ANNUNCIO
+        const createdJob = {
+            id: Date.now(),
+            ...newJob
+        };
+
+        console.log("NUOVO ANNUNCIO:", createdJob);
         setNewJob({
             title: '',
             description: '',
@@ -67,16 +89,26 @@ const CompanyPage = () => {
             contract_type: '',
             salary: ''
         });
+
+        
+        setShowSuccessModal(true);
+
+         setTimeout(() => {
+            setShowSuccessModal(false);
+        }, 3000);
     };
 
-   const filteredCandidates = candidates.filter(c => {
 
-    const matchName =c.name.toLowerCase().includes(filters.search.toLowerCase());
-    const matchStatus = !filters.status || c.status === filters.status;
-    const matchRole = !filters.role || c.role.toLowerCase() === filters.role.toLowerCase();
-    return matchName && matchStatus && matchRole;
 
-});
+
+    const filteredCandidates = candidates.filter(c => {
+
+        const matchName = c.name.toLowerCase().includes(filters.search.toLowerCase());
+        const matchStatus = !filters.status || c.status === filters.status;
+        const matchRole = !filters.role || c.role.toLowerCase() === filters.role.toLowerCase();
+        return matchName && matchStatus && matchRole;
+
+    });
 
 
     const resetFilters = () => {
@@ -87,155 +119,181 @@ const CompanyPage = () => {
         });
     };
 
+    const totalCandidates = filteredCandidates.length;
 
 
-    return (
+
+   return (
 
         <Container fluid className="py-4 bg-light d-flex row justify-content-center">
+
             <h2 className="mb-4">Dashboard Candidature</h2>
 
+            {/* FORM CREAZIONE ANNUNCIO */}
+            {showForm && (
+                <Card className="border-0 shadow-sm mb-4 w-50">
+                    <Card.Body>
 
-            <Row className="mb-4 d-flex justify-content-center">
-                <Col md={3}>
-                    <Card className="text-center border-0 shadow-sm">
-                        <Card.Body>
-                            <Card.Title className="text-muted small uppercase">Totale Candidati</Card.Title>
-                            <h3 className="fw-bold">128</h3>
-                        </Card.Body>
-                    </Card>
-                </Col>
-                <Col md={3}>
-                    <Card className="text-center border-0 shadow-sm border-start border-primary border-4">
-                        <Card.Body>
-                            <Card.Title className="text-muted small">In Colloquio</Card.Title>
-                            <h3 className="fw-bold text-primary">12</h3>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
+                        <h5 className="fw-bold mb-3">
+                            Crea nuovo annuncio
+                        </h5>
 
+                        <Row className="g-3">
 
-            <Card className="border-0 shadow-sm mb-4 w-50">
-                <Card.Body>
+                            <Col md={6}>
+                                <Form.Control
+                                    name="title"
+                                    placeholder="Titolo"
+                                    value={newJob.title}
+                                    onChange={handleChange}
+                                />
+                            </Col>
 
-                    <h5 className="fw-bold mb-3">
-                        Crea nuovo annuncio
-                    </h5>
+                            <Col md={6}>
+                                <Form.Control
+                                    name="city"
+                                    placeholder="Città"
+                                    value={newJob.city}
+                                    onChange={handleChange}
+                                />
+                            </Col>
 
-                    {/* PRIMA RIGA */}
-                    <Row className="g-3">
+                        </Row>
 
-                        <Col md={6}>
-                            <Form.Control
-                                name="title"
-                                placeholder="Titolo"
-                                value={newJob.title}
-                                onChange={handleChange}
-                            />
-                        </Col>
+                        <Row className="g-3 mt-1">
 
-                        <Col md={6}>
-                            <Form.Control
-                                name="city"
-                                placeholder="Città"
-                                value={newJob.city}
-                                onChange={handleChange}
-                            />
-                        </Col>
+                            <Col md={6}>
+                                <Form.Control
+                                    name="salary"
+                                    placeholder="Stipendio"
+                                    value={newJob.salary}
+                                    onChange={handleChange}
+                                />
+                            </Col>
 
-                    </Row>
+                            <Col md={6}>
+                                <Form.Control
+                                    name="contract_type"
+                                    placeholder="Tipo contratto"
+                                    value={newJob.contract_type}
+                                    onChange={handleChange}
+                                />
+                            </Col>
 
-                    {/* SECONDA RIGA */}
-                    <Row className="g-3 mt-1">
+                        </Row>
 
-                        <Col md={6}>
-                            <Form.Control
-                                name="salary"
-                                placeholder="Stipendio"
-                                value={newJob.salary}
-                                onChange={handleChange}
-                            />
-                        </Col>
+                        <Row className="mt-3">
 
-                        <Col md={6}>
-                            <Form.Control
-                                name="contract_type"
-                                placeholder="Tipo contratto"
-                                value={newJob.contract_type}
-                                onChange={handleChange}
-                            />
-                        </Col>
+                            <Col md={12}>
+                                <Form.Control
+                                    as="textarea"
+                                    rows={5}
+                                    name="description"
+                                    placeholder="Descrizione del lavoro..."
+                                    value={newJob.description}
+                                    onChange={handleChange}
+                                />
+                            </Col>
 
-                    </Row>
-                    <Row className="mt-3">
-                        <Col md={12}>
-                            <Form.Control
-                                as="textarea"
-                                rows={5}
-                                name="description"
-                                placeholder="Descrizione del lavoro..."
-                                value={newJob.description}
-                                onChange={handleChange} />
-                        </Col>
-                    </Row>
+                        </Row>
 
+                        {/* ERRORE */}
+                        {error && (
+                            <p className="text-danger mt-2 mb-0">
+                                {error}
+                            </p>
+                        )}
 
-                    <div className="mt-3 text-end">
-                        <Button
-                            variant="success"
-                            onClick={handleCreateJob}>
-                            Pubblica annuncio
-                        </Button>
-                    </div>
-                </Card.Body>
-            </Card>
+                        <div className="mt-3 text-end">
+                            <Button
+                                variant="success"
+                                onClick={handleCreateJob}
+                            >
+                                Pubblica annuncio
+                            </Button>
+                        </div>
 
+                    </Card.Body>
+                </Card>
+            )}
+
+            {/* FILTRI */}
             <Card className="border-0 shadow-sm mb-4">
                 <Card.Body>
+
                     <Form>
                         <Row className="align-items-end">
+
                             <Col md={4}>
                                 <Form.Group>
-                                    <Form.Label className="small fw-bold">Cerca nome candidato</Form.Label>
+                                    <Form.Label className="small fw-bold">
+                                        Cerca nome candidato
+                                    </Form.Label>
+
                                     <Form.Control
                                         type="text"
                                         placeholder="Filtra per nome..."
                                         value={filters.search}
                                         onChange={(e) =>
-                                            setFilters({ ...filters, search: e.target.value })
+                                            setFilters({
+                                                ...filters,
+                                                search: e.target.value
+                                            })
                                         }
                                     />
                                 </Form.Group>
                             </Col>
+
                             <Col md={3}>
                                 <Form.Group>
-                                    <Form.Label className="small fw-bold">Stato</Form.Label>
-                                    <Form.Select value={filters.status}
+
+                                    <Form.Label className="small fw-bold">
+                                        Stato
+                                    </Form.Label>
+
+                                    <Form.Select
+                                        value={filters.status}
                                         onChange={(e) =>
-                                            setFilters({ ...filters, status: e.target.value })
-                                        } >
+                                            setFilters({
+                                                ...filters,
+                                                status: e.target.value
+                                            })
+                                        }
+                                    >
                                         <option value=''>Tutti gli stati</option>
-                                        <option >Accettata</option>
-                                        <option >Rifiutata</option>
+                                        <option>Accettata</option>
+                                        <option>Rifiutata</option>
                                     </Form.Select>
+
                                 </Form.Group>
                             </Col>
+
                             <Col md={3}>
                                 <Form.Group>
-                                    <Form.Label className="small fw-bold">Posizione</Form.Label>
-                                    <Form.Select value={filters.role}
+
+                                    <Form.Label className="small fw-bold">
+                                        Posizione
+                                    </Form.Label>
+
+                                    <Form.Select
+                                        value={filters.role}
                                         onChange={(e) =>
-                                            setFilters({ ...filters, role: e.target.value })
-                                        } >
+                                            setFilters({
+                                                ...filters,
+                                                role: e.target.value
+                                            })
+                                        }
+                                    >
                                         <option value=''>Tutte le posizioni</option>
                                         <option>Frontend Dev</option>
-                                        <option >Backend Dev</option>
+                                        <option>Backend Dev</option>
                                         <option>UX Designer</option>
                                         <option>Full Stack</option>
-
                                     </Form.Select>
+
                                 </Form.Group>
                             </Col>
+
                             <Col md={2} className="d-flex flex-column justify-content-end">
 
                                 <Button
@@ -253,14 +311,18 @@ const CompanyPage = () => {
                                 </Button>
 
                             </Col>
+
                         </Row>
                     </Form>
+
                 </Card.Body>
             </Card>
 
-            {/* 3. Tabella Candidati */}
+            {/* TABELLA */}
             <Card className="border-0 shadow-sm">
+
                 <Table hover responsive className="mb-0">
+
                     <thead className="bg-light">
                         <tr>
                             <th>Candidato</th>
@@ -270,41 +332,94 @@ const CompanyPage = () => {
                             <th className="text-end">Azioni</th>
                         </tr>
                     </thead>
+
                     <tbody>
+
                         {filteredCandidates.map(c => (
+
                             <tr key={c.id} className="align-middle">
+
                                 <td className="fw-bold">{c.name}</td>
+
                                 <td>{c.role}</td>
+
                                 <td>{c.date}</td>
+
                                 <td>
-                                    <Badge bg={c.status === 'Rifiutata' ? 'danger' : 'success'}>
+                                    <Badge
+                                        bg={
+                                            c.status === 'Rifiutata'
+                                                ? 'danger'
+                                                : 'success'
+                                        }
+                                    >
                                         {c.status}
                                     </Badge>
                                 </td>
+
                                 <td className="text-end">
                                     <Button
-                                        variant="outline-dark"
+                                        variant="outline-primary"
                                         size="sm"
                                         className="me-2"
                                         onClick={() => handleShow(c)}
                                     >
                                         Profilo
                                     </Button>
-                                    <Button variant="primary" size="sm">Avanza</Button>
                                 </td>
+
                             </tr>
+
                         ))}
+
                     </tbody>
+
+                    <tfoot className="table-light">
+                        <tr>
+                            <td colSpan="5" className="text-end fw-bold">
+                                Totale candidati: {filteredCandidates.length}
+                            </td>
+                        </tr>
+                    </tfoot>
+
                 </Table>
+
             </Card>
+
+            {/* MODALE CANDIDATO */}
             <DettaglioCandidato
                 show={showModal}
                 handleClose={handleClose}
                 candidate={selectedCandidate}
             />
+
+            {/* MODALE SUCCESSO */}
+            <Modal
+                show={showSuccessModal}
+                onHide={() => setShowSuccessModal(false)}
+                centered
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        Operazione completata
+                    </Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                    Il tuo annuncio è stato pubblicato correttamente.
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button
+                        variant="success"
+                        onClick={() => setShowSuccessModal(false)}
+                    >
+                        Chiudi
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
         </Container>
-
-
     );
 };
 
