@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 
 
 import MainLayout from './layouts/MainLayout'
+import Hero from './components/Hero'
 import Jobspage from './pages/Jobspage'
 import Loginpage from './pages/Loginpage'
 import RegisterPage from './pages/RegisterPage'

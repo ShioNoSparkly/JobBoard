@@ -85,12 +85,7 @@ body {
 }
 
 .dropdown-menu-dark {
-  background-color: #ffffff !important;
-}
-
-/* Forza il colore su tutti gli stati del link nel dropdown */
-.dropdown-menu.dropdown-menu-dark li a.dropdown-item {
-  color: #333333 !important;
+  background-color: #dedede !important;
 }
 
 .dropdown-menu-dark .dropdown-item,

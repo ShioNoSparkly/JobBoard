@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom'
 
 function Loginpage() {
-   const navigate = useNavigate()
+const navigate = useNavigate()
 
 
    const [email, setEmail] = useState("");
@@ -46,7 +46,6 @@ function Loginpage() {
 
 
       if (foundEmail && foundPsw) {
-
          if (foundEmail.role === 'azienda') {
             navigate('/company');
          } else {
