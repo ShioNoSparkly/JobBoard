@@ -31,10 +31,10 @@ const loginUser = async (email, password) => {
     const user = await User.findByEmail(email);
 
     // test
-    console.log("Risultato DB:", user.rows[0]);
+    //console.log("Risultato DB:", user.rows[0]);
 
     // DEBUG: Vediamo cosa arriva esattamente dal DB
-    console.log("DEBUG USERDATA:", userResult);
+    //console.log("DEBUG USERDATA:", userResult);
 
     if (!user || user.rows.length === 0) {
         const err = new Error("Credenziali non valide");

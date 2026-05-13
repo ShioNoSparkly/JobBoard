@@ -7,35 +7,19 @@
 const pool = require("../config/db");
 
 const CREATE_TABLE = `
- CREATE TABLE applications (
+  CREATE TABLE applications (
         id                SERIAL PRIMARY KEY,         
         candidate_id      INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
         job_id            INTEGER NOT NULL REFERENCES job_listings(id) ON DELETE CASCADE,
         cover_letter      TEXT NOT NULL,
-        status            VARCHAR(50) DEFAULT 'inviata'
+        status            VARCHAR(50) DEFAULT 'inviata',
         created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         UNIQUE(candidate_id, job_id)  -- Evita candidature duplicate
- );
+  );
 `;
 
 const init = () => pool.query(CREATE_TABLE);
-
-const findAll = () => {
-  return pool.query(
-    `SELECT
-            a.*,
-            u.name AS candidate_name,
-            u.email AS candidate_email,
-            j.title AS job_title,
-            j.city AS job_city,
-            j.company_id
-         FROM applications a
-         JOIN users u ON a.candidate_id = u.id   
-         JOIN job_listings j ON a.job_id = j.id
-         ORDER BY a.created_at DESC`,
-  );
-};
 
 const findById = async (id) => {
   const result = await pool.query(
@@ -53,6 +37,23 @@ const findById = async (id) => {
   );
   return result.rows[0];
 };
+
+const findAll = () => {
+  return pool.query(
+    `SELECT
+            a.*,
+            u.name AS candidate_name,
+            u.email AS candidate_email,
+            j.title AS job_title,
+            j.city AS job_city,
+            j.company_id
+         FROM applications a
+         JOIN users u ON a.candidate_id = u.id   
+         JOIN job_listings j ON a.job_id = j.id
+         ORDER BY a.created_at DESC`,
+  );
+};
+
 
 const findByCandidateId = (candidate_id) => {
   return pool.query(
@@ -74,12 +75,13 @@ const findByCandidateId = (candidate_id) => {
 };
 
 const findByCandidateAndJob = async (candidate_id, job_id) => {
-  const result = await pool.query(
+  //  const result = await pool.query(
+  return pool.query(
     `SELECT * FROM applications 
          WHERE candidate_id = $1 AND job_id = $2`,
     [candidate_id, job_id],
   );
-  return result.rows[0];
+  //  return result.rows[0];
 };
 
 const findByJobId = (job_id) => {
@@ -126,9 +128,8 @@ const updateCoverLetter = (id, { cover_letter }) => {
 };
 
 const remove = (id) => {
-  return pool.query(`DELETE FROM applications WHERE id = $1 RETURNING id`, [
-    id,
-  ]);
+  return pool.query(
+    `DELETE FROM applications WHERE id = $1 RETURNING id`, [id,]);
 };
 
 module.exports = {

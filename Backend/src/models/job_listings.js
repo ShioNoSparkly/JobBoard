@@ -10,14 +10,33 @@ const CREATE_TABLE = `
     title           VARCHAR(255)    NOT NULL,
     description     TEXT            NOT NULL,
     contract_type   VARCHAR(100)    NOT NULL,
-
-	city            varchar(150)    NOT NULL,
-	salary          Numeric(10,2)   NOT NULL,
+    city            varchar(150)    NOT NULL,
+    salary          Numeric(10,2)   NOT NULL,
     created_at      TIMESTAMPTZ     NOT NULL DEFAULT NOW()
   );    
 `;
 
 const init = () => pool.query(CREATE_TABLE);
+
+const findById = async (id) => {
+  const result = await pool.query(
+    `SELECT 
+          j.*,
+          u.name AS company_name,
+          u.email AS company_email,
+          COUNT(a.id) AS total_applications,
+          COUNT(CASE WHEN a.status = 'inviata' THEN 1 END) AS pending_applications,
+          COUNT(CASE WHEN a.status = 'accettata' THEN 1 END) AS accepted_applications,
+          COUNT(CASE WHEN a.status = 'rifiutata' THEN 1 END) AS rejected_applications   
+      FROM job_listings j
+      JOIN users u ON u.id = j.company_id
+      LEFT JOIN applications a ON a.job_id = j.id
+      WHERE j.id = $1
+      GROUP BY j.id, u.name, u.email`,
+    [id],
+  );
+  return result.rows[0];
+};
 
 const findAll = () =>
   pool.query(
@@ -136,6 +155,7 @@ const remove = (id) =>
 
 module.exports = {
   init,
+  findById,
   findAll,
   findByFilters,
   findByKeyword,
