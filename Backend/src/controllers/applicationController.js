@@ -24,7 +24,7 @@ const apply = async (req, res) => {
                 data: newApplication
             });
     } catch (err) {
-        // Gestiamo errori tipo "Ti sei già candidato" (400) o "Job non trovato" (404)
+        // errori tipo "Ti sei già candidato" (400) o "Job non trovato" (404)
         res
             .status(err.statusCode || 500)
             .json({ error: err.message });
@@ -46,15 +46,19 @@ const updateStatus = async (req, res) => {
 
         res
             .json({
+                successo: true,
                 message: "Stato candidatura aggiornato",
                 data: updatedApplication
             });
     } catch (err) {
-        // Gestiamo l'errore "Non autorizzato" se l'azienda prova a modificare 
+        // Gestiamo se l'azienda prova a modificare 
         // una candidatura di un annuncio non suo
         res
-            .status(err.statusCode || 403)
-            .json({ error: err.message });
+            .status(err.statusCode || 500)
+            .json({
+                successo: false,
+                error: err.message
+            });
     }
 };
 
@@ -71,6 +75,7 @@ const getMyApplications = async (req, res) => {
     }
 };
 
+// funzione che riceve la chiamata dal Router
 const getApplicationsByJob = async (req, res) => {
     try {
         const { jobId } = req.params;

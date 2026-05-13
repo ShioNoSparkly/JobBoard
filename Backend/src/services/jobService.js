@@ -1,29 +1,53 @@
 
 // Gestisce la creazione degli annunci e la logica di visibilità.
 
+
 const Job = require('../models/job_listings');
 
 const createJob = async (elencoJob, companyId) => {
-    return await Job.create({ ...elencoJob, company_id: companyId });
+    const result = await Job.create({ ...elencoJob, company_id: companyId });
+    return result.rows[0]; // Ritorna l'annuncio appena inserito
+};
+
+const getJobById = async (id) => {
+    const job = await Job.findById(id); // estraiamo già rows[0]
+    if (!job) {
+        const err = new Error("L'annuncio non esiste");
+        err.statusCode = 404;
+        throw err;
+    }
+    return job;
 };
 
 const getJobsPerCompany = async (companyId) => {
-    return await Job.findAll({ where: { company_id: companyId } });
-};
 
-const deleteJob = async (jobId, companyId) => {
-    const job = await Job.findOne({ where: { id: jobId, company_id: companyId } });
-    if (!job) throw new Error("Annuncio non trovato o non autorizzato");
-    return await job.destroy();
+    const result = await Job.findCompanyProfile(companyId);
+    return result.rows;
 };
 
 const getAllJobs = async () => {
-    return await Job.findAll({ order: [['created_at', 'DESC']] });
+    const result = await Job.findAll();
+    return result.rows;
+};
+
+const deleteJob = async (jobId, companyId) => {
+    // Controlla prima se esiste e appartiene all'azienda
+    const job = await getJobById(jobId);
+
+    if (job.company_id !== companyId) {
+        const err = new Error("Non sei autorizzato a eliminare questo annuncio");
+        err.statusCode = 403;
+        throw err;
+    }
+
+    const result = await Job.remove(jobId);
+    return result.rows[0];
 };
 
 module.exports = {
     createJob,
+    getJobById,
     getJobsPerCompany,
-    deleteJob,
-    getAllJobs
+    getAllJobs,
+    deleteJob
 };
