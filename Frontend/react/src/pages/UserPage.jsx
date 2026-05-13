@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import Hero from '../components/Hero'
+
 
 function UserPage() {
 
@@ -8,7 +11,7 @@ function UserPage() {
       id: 1,
       jobTitle: 'Frontend Developer',
       company: 'Tech SRL',
-      status: 'in revisione'
+      status: 'accettata'
     },
     {
       id: 2,
@@ -29,6 +32,10 @@ function UserPage() {
   };
 
   return (
+
+    <>
+   <Hero/>
+
     <div className="container py-5">
 
       <h1 className="fw-bold mb-4">
@@ -37,8 +44,8 @@ function UserPage() {
 
       <div className="card shadow-sm border-0 p-4 mb-4">
 
-        <h4 className="fw-bold mb-3">
-          📄 Le tue candidature
+        <h4 className="fw-bold mb-3 text-primary">
+          Le tue candidature
         </h4>
 
         {applications.length === 0 ? (
@@ -63,26 +70,32 @@ function UserPage() {
                 </small>
 
                 <div>
-                  <span className={`badge mt-2 ${
-                    app.status === 'accettata'
-                      ? 'bg-success'
-                      : app.status === 'rifiutata'
-                      ? 'bg-danger'
-                      : 'bg-warning text-dark'
-                  }`}>
+                  <span className={`badge mt-2 ${app.status === 'accettata' ? 'bg-success' : app.status === 'rifiutata' ? 'bg-danger': 'bg-warning text-dark'}`}>
                     {app.status}
                   </span>
                 </div>
-
               </div>
 
-              <button
-                className="btn btn-outline-danger btn-sm"
-                onClick={() => handleDelete(app.id)}
-              >
-                Rimuovi
-              </button>
 
+              <div className='d-flex gap-2'>
+                <NavLink
+                  to="https://mail.google.com/mail/?view=cm&fs=1&to=contatti@jobboard-agency.it"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline-success btn-sm text-start d-flex align-items-center"
+                  type="button">Contattaci
+                </NavLink>
+
+
+
+                <button
+                  className="btn btn-outline-danger btn-sm"
+                  onClick={() => handleDelete(app.id)}
+                >
+                  Rimuovi
+                </button>
+
+              </div>
             </div>
 
           ))
@@ -91,11 +104,12 @@ function UserPage() {
 
       </div>
 
-      <button className="btn btn-danger">
-        Esci
+      <button className="btn btn-primary">
+        Torna alla home
       </button>
 
     </div>
+     </>
   );
 }
 

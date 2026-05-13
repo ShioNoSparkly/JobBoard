@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom'
+import Hero from '../components/Hero'
+import JobCard from '../components/JobCard'
 import DettaglioCandidato from '../components/DettaglioCandidato'
 import {
     Container,
@@ -18,10 +20,10 @@ import {
 const CompanyPage = () => {
     // Esempio di dati
     const [candidates, setCandidates] = useState([
-        { id: 1, name: "Azienda1", role: "Frontend Dev", status: "Accettata", date: "2025-05-10" },
-        { id: 2, name: "Azienda2", role: "Backend Dev", status: "Rifiutata", date: "2026-05-08" },
-        { id: 3, name: "Azienda3", role: "Ux Designer", status: "Rifiutata", date: "2026-06-11" },
-        { id: 4, name: "Azienda4", role: "Full Stack", status: "Accettata", date: "2026-07-09" },
+        { id: 1, name: "Candidato1", role: "Frontend Dev", status: "Accettata", date: "2025-05-10" },
+        { id: 2, name: "Candidato2", role: "Backend Dev", status: "Rifiutata", date: "2026-05-08" },
+        { id: 3, name: "Candidato3", role: "Ux Designer", status: "Rifiutata", date: "2026-06-11" },
+        { id: 4, name: "Candidato4", role: "Full Stack", status: "Accettata", date: "2026-07-09" },
     ]);
 
     const [showModal, setShowModal] = useState(false);
@@ -124,10 +126,11 @@ const CompanyPage = () => {
 
 
    return (
-
+<>
+<Hero/>
         <Container fluid className="py-4 bg-light d-flex row justify-content-center">
 
-            <h2 className="mb-4">Dashboard Candidature</h2>
+            <h2 className="mb-4">Dashboard Azienda</h2>
 
             {/* FORM CREAZIONE ANNUNCIO */}
             {showForm && (
@@ -263,6 +266,7 @@ const CompanyPage = () => {
                                         <option value=''>Tutti gli stati</option>
                                         <option>Accettata</option>
                                         <option>Rifiutata</option>
+                                        <option>In Revisione</option>
                                     </Form.Select>
 
                                 </Form.Group>
@@ -420,6 +424,7 @@ const CompanyPage = () => {
             </Modal>
 
         </Container>
+        </>
     );
 };
 

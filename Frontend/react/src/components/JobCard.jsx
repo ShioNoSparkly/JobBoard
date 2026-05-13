@@ -4,6 +4,7 @@ import { useState } from 'react';
 import ModalDelete from './ModalDelete';
 
 function JobCard({ job }) {
+  
 
   const navigate = useNavigate();
 const [users , setUsers] = useState([])
@@ -17,7 +18,7 @@ const handleConfirm = () => {
 
     <div className="col-md-6 col-lg-4">
       <div className="card h-100 border-0 shadow rounded-4 position-relative">
-        {users.role !== 'user' &&(
+        {users.role === 'user' &&(
         <div className='d-flex justify-content-end'>
         <button className='position-absolute bg-transparent text-danger border-0 fs-2 btn-elimina' 
       onClick={() => setShowModal(true)}><RiCloseCircleLine /></button>

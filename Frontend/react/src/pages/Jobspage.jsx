@@ -1,4 +1,5 @@
-import JobCard from "../components/JobCard";
+import JobCard from "../components/JobCard"
+import Hero from '../components/Hero'
 
 function Jobspage() {
   // const [jobs, setJobs] = useState([]);
@@ -68,7 +69,8 @@ function Jobspage() {
 
   return (
     <>
-      <section className="hero-section d-flex align-items-center py-5 bg-img-2">
+    <Hero/>
+      {/* <section className="hero-section d-flex align-items-center py-5 bg-img-2">
         <div className= "overlay z-0"></div>
           <div className="container py-5 position-relative">
             <h1 className="display-3 fw-bold mb-3 text-dark z-1">
@@ -78,7 +80,7 @@ function Jobspage() {
                {currentHero.subtitle}
             </p>
           </div>
-      </section>
+      </section> */}
 
       <section className="py-5 bg-light">
         <div className="container">

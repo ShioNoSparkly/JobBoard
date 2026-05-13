@@ -10,9 +10,9 @@ import { useState } from "react";
 
 
 function Navbar() {
-const [user, setUser]= useState(null)
- 
-const logout = () => {setUser(null);};
+  const [user, setUser] = useState(null)
+
+  const logout = () => { setUser(null); };
 
   return (
     <>
@@ -33,24 +33,23 @@ const logout = () => {setUser(null);};
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0 gap-4">
               <li className="nav-item">
-                <NavLink className="nav-link active" aria-current="page" to="#">
-                  Candidature
+                <NavLink className="nav-link active fs-4" aria-current="page" to="/">
+                  Home
                 </NavLink>
               </li>
-              <li className="nav-item dropdown">
+              <li className="nav-item dropdown d-flex">
                 <NavLink
-                  className="nav-link dropdown-toggle"
+                  className="nav-link dropdown-toggle fs-4"
                   to="#"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
-                >
-                  Città
+                > Città
                 </NavLink>
 
-                <ul className="dropdown-menu dropdown-menu-dark shadow border-0 text-center w-75 mx-auto w-lg-auto mb-2">
+                <ul className="dropdown-menu dropdown-menu-dark shadow border-0 text-center w-75 mx-auto w-lg-auto mb-2 fs-5">
                   <li>
                     <NavLink className="dropdown-item" to="#">
                       Milano
@@ -80,44 +79,23 @@ const logout = () => {setUser(null);};
               </li>
             </ul>
             <form
-              className="d-flex mx-auto ms-lg-auto me-lg-0 mt-2 mt-lg-0 mb-2"
-              role="search"
-              style={{ width: "fit-content" }}
-            >
-              <button
-                className="btn btn-sm btn-outline-primary mx-2"
-                type="button"
-              >
-                <AiFillStar className="mb-1" />
-              </button>
+              className="d-flex mx-auto ms-lg-auto me-lg-0 mt-2 mt-lg-0 mb-2 gap-1"
+              role="search">
               <input
-                className="form-control form-control-sm me-2"
+                className="form-control form-control-sm me-2 w-75 fs-5"
                 type="search"
                 placeholder="Cerca"
                 aria-label="Search"
-                style={{ width: "180px" }}
               />
               <button
-                className="btn btn-sm btn-outline-primary me-2 d-flex align-items-center justify-content-center"
+                className="btn btn-outline-primary me-2 d-flex align-items-center justify-content-center"
                 type="submit"
               >
-                <FaSearch style={{ fontSize: "0.8rem" }} />
+                <FaSearch className='fs-5' />
               </button>
-              {user ? (
-                <button
-                  className="btn btn-sm btn-outline-danger"
-                  onClick={logout}
-                >
-                  Esci
-                </button>
-              ) : (
-                <NavLink
-                  to="/login"
-                  className="btn btn-sm btn-outline-primary"
-                >
-                  Accedi
-                </NavLink>
-              )}
+              <NavLink to="/login" className="btn btn-outline-primary fs-5" type="button">
+                Accedi
+              </NavLink>
             </form>
           </div>
         </div>
