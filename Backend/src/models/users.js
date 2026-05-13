@@ -84,6 +84,7 @@ const updatePassword = (id, hashedPassword) =>
 const remove = (id) =>
   pool.query("DELETE FROM users WHERE id = $1 RETURNING id", [id]);
 
+
 // ── Esportazione ──────────────────────────────────────────────
 module.exports = {
   init,

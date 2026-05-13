@@ -18,6 +18,12 @@ const {
 
 console.log("LOG: Il file applicationRoutes è stato caricato!");
 
+console.log("TEST FUNZIONI:");
+console.log("autenticato:", typeof autenticato);
+console.log("soloCandidato:", typeof soloCandidato);
+console.log("controller.apply:", typeof controller.apply);
+
+
 const regolaId = [
   param("id")
     .isInt({ min: 1 })

@@ -2,41 +2,40 @@
 // Gestisce l'invio delle candidature e i cambi di stato.
 // 
 
+// const Job = require('../models/job_listings');
+
 const Application = require('../models/applications');
-const Job = require('../models/job_listings');
+const JobService = require('../services/jobService');
 
-// per rispondere ad un annuncio job
+// per rispondere ad un annuncio "job"
 const applyToJob = async (candidateId, jobId, coverLetter) => {
-    // Verifichiamo se l'annuncio esiste
-    const job = await Job.findById(jobId);
-    if (!job) {
-        const err = new Error("L'annuncio non esiste");
-        err.statusCode = 404;
-        throw err;
-    }
+    // chiamo jobService e fa il controllo
+    // Se l'annuncio non esiste lancerà l'errore
+    await JobService.getJobById(jobId);
 
-    // CONTROLLO PREVENTIVO: Il candidato si è già candidato?
-    // 
-    const candidaturaEsistente = await Application.findByCandidateAndJob(candidateId, jobId);
+    // Verifica duplicato
+    const resultDuplicato = await Application.findByCandidateAndJob(candidateId, jobId);
+    const candidaturaEsistente = resultDuplicato.rows ? resultDuplicato.rows[0] : resultDuplicato;
 
     if (candidaturaEsistente) {
         const err = new Error("Ti sei già candidato per questa posizione");
-        err.statusCode = 409; // conflitto
+        err.statusCode = 409;
         throw err;
     }
 
-    // Se passiamo i controlli, creiamo la candidatura
-    return await Application.create({
+    const newApp = await Application.create({
         candidate_id: candidateId,
         job_id: jobId,
         cover_letter: coverLetter,
         status: 'inviata'
     });
+    return newApp.rows[0];
 };
 
 const updateApplicationStatus = async (applicationId, newStatus, companyId) => {
     //  Recuperiamo la candidatura includendo i dati dell'annuncio associato
-    const application = await Application.findById(applicationId);
+    const appResult = await Application.findById(applicationId);
+    const application = appResult.rows ? appResult.rows[0] : appResult;
 
     if (!application) {
         const err = new Error("Candidatura non trovata");
@@ -45,7 +44,7 @@ const updateApplicationStatus = async (applicationId, newStatus, companyId) => {
     }
 
     //  Recuperiamo l'annuncio per vedere chi è il proprietario
-    const job = await Job.findById(application.job_id);
+    const job = await JobService.getJobById(application.job_id);
 
     //  L'azienda loggata è la stessa che ha pubblicato l'annuncio? 
     // così l'annuncio che non appartiene all'azienda non può essere modificato
@@ -56,29 +55,29 @@ const updateApplicationStatus = async (applicationId, newStatus, companyId) => {
     }
 
     //  Aggiornamento dello stato
-    return await Application.updateStatus(applicationId, newStatus);
+    const updatedApp = await Application.updateStatus(applicationId, newStatus);
+    return updatedApp.rows[0];
 };
 
 const getCandidatoApplications = async (candidateId) => {
-    return await Application.findByCandidateId(candidateId);
+    const result = await Application.findByCandidateId(candidateId);
+    return result.rows;
 };
 
-
 const getApplicationsByJob = async (jobId, companyId) => {
+
+    const job = await JobService.getJobById(jobId);
+
     // Verifichiamo prima che l'annuncio appartenga all'azienda
-    //
-    const job = await Job.findById(jobId);
-    if (!job || job.company_id !== companyId) {
+    if (job.company_id !== companyId) {
         const err = new Error("Non autorizzato o annuncio non trovato");
         err.statusCode = 403;
         throw err;
     }
 
-    // ritorna al model per prendere i candidati
-    return await Application.findByJobId(jobId);
+    const result = await Application.findByJobId(jobId);
+    return result.rows;
 };
-
-
 
 module.exports = {
     applyToJob,

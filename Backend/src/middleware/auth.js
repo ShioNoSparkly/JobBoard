@@ -109,7 +109,7 @@ const soloAzienda = (req, res, next) => {
 //};
 
 
-// ── soloSéOAzienda (Refactoring) ──────────────────────────────
+// ── soloSéOAzienda  ──────────────────────────────
 const soloSéOAzienda = (req, res, next) => {
   // Prendiamo l'ID dai parametri (es. /users/:id)
   const idRisorsa = parseInt(req.params.id);

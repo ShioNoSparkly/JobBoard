@@ -14,25 +14,27 @@ const {
     soloCandidato,
 } = require("../middleware/auth");
 
+
+// Ivalidatore dei campi da middlware
+//const { regoleJob } = require("../middleware/jobValidator");
+
 const regolaId = [
     param("id")
         .isInt({ min: 1 })
         .withMessage("L'id deve essere un numero intero positivo"),
 ];
 
-// Sostituiamo il "mock" di prima con i middleware reali
-
 console.log("Ciao dal router job")
 
 // TEST: Creazione annuncio senza middleware
 // uso un ID esistente nel DB (es. 1)
-router.post('/test-create', (req, res, next) => {
+// router.post('/test-create', (req, res, next) => {
 
-    console.log("Dentro la rotta test-create")
+//    console.log("Dentro la rotta test-create")
 
-    req.user = { id: 1, role: 'azienda' }; // MOCK: simuliamo il middleware
-    next();
-}, jobController.createJob);
+//    req.user = { id: 1, role: 'azienda' }; // MOCK: simuliamo il middleware
+//    next();
+// }, jobController.createJob);
 
 router.get("/",
     autenticato,
@@ -42,6 +44,7 @@ router.get("/",
 router.post("/",
     autenticato,
     soloAzienda,
+    //  regoleJob,
     validate,
     jobController.createJob
 );
