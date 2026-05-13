@@ -14,7 +14,7 @@ function Navbar() {
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-          <NavLink className="navbar-brand" to="#">
+          <NavLink className="navbar-brand" to="/">
             <img src={logo} alt="Logo Jobboard" style={{ width: "110px" }} />
           </NavLink>
           <button

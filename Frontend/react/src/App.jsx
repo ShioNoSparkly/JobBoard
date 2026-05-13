@@ -18,8 +18,11 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<MainLayout />}>
+
+        
           <Route index element={<Jobspage />} />
           <Route path='login' element={<Loginpage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/jobs/:id" element={<JobDetailsPage />} />
           <Route path="/company" element={<CompanyPage />} />
           <Route path="/user" element={<UserPage />} />
