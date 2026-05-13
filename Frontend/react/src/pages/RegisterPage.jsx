@@ -1,20 +1,75 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 function RegisterPage() {
+  const navigate = useNavigate()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [ruolo, setRuolo] = useState("");
   const [nome, setNome] = useState("");
+  const [error, setError] = useState({});
+  const [success, setSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // MOMENTANEA PER TEST SENZA DATI BACKEND
+    let user = [
+      {
+        id: 1,
+        email: "admin@admin.it",
+        password: "Password123!",
+        name: "Pippo",
+        role: "azienda"
+      },
+      {
+        id: 2,
+        email: "user@user.it",
+        password: "Password123!",
+        name: "PippoUser",
+        role: "candidato"
+      }
+    ]
+
+
+    let newErrors = {};
+
+    if (!email.trim()) newErrors.email = "Email obbligatoria"
+    if (!password.trim()) newErrors.password = "Password obbligatoria"
+    if (!nome.trim()) newErrors.nome = "Nome obbligatorio"
+    if (!ruolo) newErrors.ruolo = "Seleziona un ruolo"
+
+    setError(newErrors);
+
+    if (Object.keys(newErrors).length > 0) return;
+
+    setEmail("");
+  setPassword("");
+  setNome("");
+  setRuolo("");
+  setError({});
+
+  setSuccess(true);
+  setSuccessMessage("Registrazione avvenuta con successo!")
+
+  setTimeout(() => {
+    setSuccess(false);
+    navigate("/login");
+  }, 3000);
+
+
+
     console.log("REGISTER DATA:", {
       email,
       password,
+      nome,
+      ruolo
     });
   };
+
+
   return (
     <>
       <div className="bg-img-full d-flex align-items-center justify-content-center">
@@ -24,6 +79,13 @@ function RegisterPage() {
               <div className="card shadow border-0 rounded-4">
                 <div className="card-body p-5 py-md-6 shadow-lg">
                   <h2 className="fw-bold mb-4 text-center">Registrati</h2>
+
+                  {successMessage && (
+                    <div className="alert alert-success text-center">
+                      {successMessage}
+                    </div>
+                  )}
+
                   <form onSubmit={handleSubmit}>
                     <div className="row g-4">
                       <div className="col-md-6 mb-3">
@@ -35,6 +97,11 @@ function RegisterPage() {
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="Inserisci email"
                         />
+                        {error.email && (
+                          <div className="text-danger mt-1">
+                            {error.email}
+                          </div>
+                        )}
                       </div>
 
                       <div className="col-md-6 mb-3">
@@ -46,6 +113,11 @@ function RegisterPage() {
                           onChange={(e) => setPassword(e.target.value)}
                           placeholder="Inserisci password"
                         />
+                        {error.password && (
+                          <div className="text-danger mt-1">
+                            {error.password}
+                          </div>
+                        )}
                       </div>
                       <div className="col-md-6 mb-3">
                         <label className="form-label fs-5">Nome</label>
@@ -56,6 +128,11 @@ function RegisterPage() {
                           onChange={(e) => setNome(e.target.value)}
                           placeholder="Inserisci nome"
                         />
+                        {error.nome && (
+                          <div className="text-danger mt-1">
+                            {error.nome}
+                          </div>
+                        )}
                       </div>
                       <div className="col-md-6 mb-3">
                         <label className="form-label d-block fs-5">Ruolo</label>
@@ -69,6 +146,7 @@ function RegisterPage() {
                             checked={ruolo === "1"}
                             onChange={(e) => setRuolo(e.target.value)}
                           />
+
                           <label className="form-check-label" htmlFor="Azienda">
                             Azienda
                           </label>
@@ -87,6 +165,11 @@ function RegisterPage() {
                             Candidato
                           </label>
                         </div>
+                        {error.ruolo && (
+                          <div className="text-danger mt-2">
+                            {error.ruolo}
+                          </div>
+                        )}
                       </div>
                     </div>
                     <button
@@ -95,6 +178,8 @@ function RegisterPage() {
                     >
                       Registrati
                     </button>
+                    <p className='mt-3'>Hai già un account?
+                      <NavLink to='/login' className='text-decoration-none fw-semibold mx-2'>Accedi</NavLink></p>
                   </form>
                 </div>
               </div>
