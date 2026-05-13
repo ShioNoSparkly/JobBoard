@@ -1,56 +1,125 @@
-import { NavLink } from 'react-router-dom';
-import '../assets/logo.webp';
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
+import { FaFacebook, FaLinkedin, FaChevronDown } from "react-icons/fa";
 
+const Footer = () => {
+  const [showDropdown, setShowDropdown] = useState(false);
 
-function Footer() {
   return (
-    <>
-      <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-        {" "}
-        <p className="col-md-4 mb-0 text-body-secondary">
-          © 2025 Company, Inc
-        </p>{" "}
-        <a
-          href="/"
-          className="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
-          aria-label="Bootstrap"
-        >
-          {" "}
-          <svg className="bi me-2" width="40" height="32" aria-hidden="true">
-            <use xlink:href="#bootstrap"></use>
-          </svg>{" "}
-        </a>{" "}
-        <ul className="nav col-md-4 justify-content-end">
-          {" "}
-          <li className="nav-item">
-            <NavLink className="nav-link px-2 text-body-secondary" to="/">
-              Home
-            </NavLink>
-          </li>{" "}
-          <li className="nav-item">
-            <NavLink className="nav-link px-2 text-body-secondary" to="/features">
-              Features
-            </NavLink>
-          </li>{" "}
-          <li className="nav-item">
-            <NavLink className="nav-link px-2 text-body-secondary" to="/pricing">
-              Pricing
-            </NavLink>
-          </li>{" "}
-          <li className="nav-item">
-            <NavLink className="nav-link px-2 text-body-secondary" to="/faqs">
-              FAQs
-            </NavLink>
-          </li>{" "}
-          <li className="nav-item">
-            <NavLink className="nav-link px-2 text-body-secondary" to="/about">
-              About
-            </NavLink>
-          </li>{" "}
-        </ul>{" "}
-      </footer>
-    </>
+    <footer className="py-5 bg-custom-footer border-top mt-auto">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-3 mb-3">
+            <h4 className="fw-bold text-primary">Contatti</h4>
+            <ul className="nav flex-column">
+              <li className="nav-item">Chiamaci: +39 123 456 7891</li>
+              <li className="nav-item">Email: contatti@jobboard-agency.it</li>
+              <li className="nav-item">Sede principale: Via Roma 1, 00100 Roma&nbsp;(RM)</li>
+            </ul>
+          </div>
+          <div className="col-md-3 mb-3">
+            <h4 className="fw-bold text-primary">Agenzia</h4>
+            <ul className="nav flex-column">
+              <li className="nav-item">
+                <NavLink
+                  to="/privacy"
+                  className="nav-link p-0 small fw-bold mb-2 footer-link-custom text-muted"
+                >
+                  Privacy Policy
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink
+                  to="/cookie"
+                  className="nav-link p-0 small fw-bold mb-2 footer-link-custom text-muted"
+                >
+                  Cookie
+                </NavLink>
+              </li>
+
+              
+              <li className="nav-item">
+                <NavLink
+                  to="/termini"
+                  className="nav-link p-0 small fw-bold mb-2 footer-link-custom text-muted"
+                >
+                  Termini e Condizioni
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+
+          <div className="col-md-4 offset-md-1 mb-3">
+            <h5 className="fw-bold">Hai dubbi? Consulta le FAQ</h5>
+            <p className="text-muted small">
+              Abbiamo raccolto le domande più frequenti per aiutarti subito.
+            </p>
+
+            <div className="dropdown">
+              <button
+                className="btn btn-outline-primary btn-sm w-100 text-start d-flex justify-content-between align-items-center"
+                type="button"
+                onClick={() => setShowDropdown(!showDropdown)}
+              >
+                Seleziona un argomento...
+                <FaChevronDown
+                  className={`ms-2 ${showDropdown ? "rotate-180" : ""}`}
+                />
+              </button>
+
+              <ul
+                className={`dropdown-menu w-100 shadow border-0 ${showDropdown ? "show" : ""}`}
+              >
+                <li>
+                  <NavLink to="/carica-cv" className="dropdown-item py-2">
+                    Come caricare il CV?
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/come-candidarsi" className="dropdown-item py-2">
+                    Come candidarsi a un annuncio?
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/tempi-selezione" className="dropdown-item py-2">
+                    Quali sono i tempi di selezione?
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="d-flex flex-column flex-sm-row justify-content-between mt-2 py-3 border-top">
+          <p className="text-muted small mb-0">
+            © 2026 JobBoard. Tutti i diritti riservati.
+          </p>
+          <ul className="list-unstyled d-flex align-items-start mb-0 mt-3 mt-sm-0">
+            <li className="ms-3">
+              <a
+                className="link-dark p-0 d-flex align-items-center"
+                href="https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2F%3Flocale%3Dit_IT"
+                style={{ lineHeight: "1" }}
+                target="_blank"
+              >
+                <FaFacebook className="fs-3" style={{ color: "#1877F2" }} />
+              </a>
+            </li>
+            <li className="ms-3">
+              <a
+                className="link-dark p-0 d-flex align-items-center"
+                href="https://www.linkedin.com/home?originalSubdomain=it"
+                style={{ lineHeight: "1" }}
+                target="_blank"
+              >
+                <FaLinkedin className="fs-3" style={{ color: "#0560bb" }} />
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
   );
-}
+};
 
 export default Footer;
