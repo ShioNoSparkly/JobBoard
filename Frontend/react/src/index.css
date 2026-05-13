@@ -15,17 +15,56 @@ body {
 }
 
 .bg-img-full {
-  min-height: 80vh; 
+  min-height: 80vh;
   width: 100%;
-  background-image: 
-    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.05)), 
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.05)),
     url("./assets/bg-register-login.webp");
-    
+
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   margin: 0;
   padding: 0;
+}
+
+.hero-section.bg-img-privacy {
+  background-image:
+    linear-gradient(rgba(166, 166, 166, 0.5), rgba(187, 187, 187, 0.5)),
+    url("./assets/bg-privacy.webp") !important;
+  min-height: 50vh;
+}
+
+
+.hero-section.bg-img-cookie {
+  background-image:
+    linear-gradient(rgba(166, 166, 166, 0.5), rgba(187, 187, 187, 0.5)),
+    url("./assets/bg-cookie.webp") !important;
+  min-height: 50vh;
+}
+
+
+.hero-section.bg-img-termini {
+  background-image:
+    linear-gradient(rgba(166, 166, 166, 0.5), rgba(187, 187, 187, 0.5)),
+    url("./assets/bg-termini.webp") !important;
+  min-height: 50vh;
+}
+
+
+.hero-section.bg-img-tempi {
+  background-image:
+    linear-gradient(rgba(166, 166, 166, 0.5), rgba(187, 187, 187, 0.5)),
+    url("./assets/bg-tempi.webp") !important;
+  min-height: 50vh;
+}
+
+
+.hero-section.bg-img-candidarsi {
+  background-image:
+    linear-gradient(rgba(166, 166, 166, 0.5), rgba(187, 187, 187, 0.5)),
+    url("./assets/bg-candidarsi.webp") !important;
+  min-height: 50vh;
 }
 
 .hero-section {
@@ -46,7 +85,12 @@ body {
 }
 
 .dropdown-menu-dark {
-  background-color: #1f1f1f !important;
+  background-color: #ffffff !important;
+}
+
+/* Forza il colore su tutti gli stati del link nel dropdown */
+.dropdown-menu.dropdown-menu-dark li a.dropdown-item {
+  color: #333333 !important;
 }
 
 .dropdown-menu-dark .dropdown-item,
@@ -55,7 +99,6 @@ body {
 .dropdown-menu-dark .dropdown-item:focus {
   background-color: transparent !important;
   background-image: none !important;
-  color: #ffffff !important;
 }
 
 .dropdown-menu-dark .dropdown-item:hover {
@@ -67,4 +110,45 @@ body {
 .dropdown-toggle:focus {
   outline: none !important;
   box-shadow: none !important;
+}
+
+.dropdown-menu .dropdown-item.active,
+.dropdown-menu .dropdown-item:active {
+  background-color: transparent !important;
+  color: var(--bs-dropdown-link-color) !important;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #186dc2 !important;
+  color: #212529 !important;
+}
+
+/* App.css */
+
+.bg-custom-footer {
+  background-color: #f1f1f1; /* Inserisci qui il codice esagonale del colore che desideri */
+}
+
+/* Se il colore di sfondo è scuro, ricorda di cambiare il colore del testo */
+.bg-custom-footer p,
+.bg-custom-footer h4,
+.bg-custom-footer h5 {
+  color: #333; /* O #fff se lo sfondo è molto scuro */
+}
+.bg-navbar-custom {
+  background-color: #f1f1f1; /* Inserisci qui il codice esagonale del colore che desideri */
+}
+
+.footer-link-custom {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  text-decoration: none;
+  letter-spacing: 0.4px;
+}
+
+.footer-link-custom:hover {
+  color: #007bff !important;
 }
