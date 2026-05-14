@@ -51,23 +51,28 @@ const getJobById = async (req, res) => {
 };
 
 // Recupera tutti gli annunci (Candidati / Pubblico)
+// con aggiunta di filtri
+
 const getAllJobs = async (req, res) => {
     try {
-        const jobs = await jobService.getAllJobs();
-        res
-            .json({
-                successo: true,
-                dati: jobs
-            });
+        // Estraiamo i potenziali parametri dall'URL (?search=...&city=...&contract_type=...)
+        const { city, contract_type, search } = req.query;
+
+        // Passiamo i filtri al service
+        const jobs = await jobService.getAllJobs({ city, contract_type, search });
+
+        res.json({
+            successo: true,
+            dati: jobs
+        });
     } catch (err) {
-        res
-            .status(500)
-            .json({
-                successo: false,
-                error: err.message
-            });
+        res.status(500).json({
+            successo: false,
+            error: err.message
+        });
     }
 };
+
 
 // Recupera tutti gli annunci per Azienda
 const getCompanyJobs = async (req, res) => {

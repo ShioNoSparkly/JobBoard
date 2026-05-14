@@ -25,7 +25,22 @@ const getJobsPerCompany = async (companyId) => {
     return result.rows;
 };
 
-const getAllJobs = async () => {
+const getAllJobs = async (filters = {}) => {
+    const { city, contract_type, search } = filters;
+
+    // Se c'è una parola chiave, usa la ricerca per titolo
+    if (search) {
+        const result = await Job.findByKeyword(search);
+        return result.rows;
+    }
+
+    // Se ci sono filtri di città e contratto, usa i filtri combinati
+    if (city && contract_type) {
+        const result = await Job.findByFilters(city, contract_type);
+        return result.rows;
+    }
+
+    // Altrimenti restituisce tutti gli annunci (comportamento standard)
     const result = await Job.findAll();
     return result.rows;
 };
