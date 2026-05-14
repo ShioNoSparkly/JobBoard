@@ -40,7 +40,7 @@ console.log("Ciao dal router job")
 
 // GET /api/jobs — Lista di tutti gli annunci
 router.get("/",
-    autenticato,
+    // autenticato,
     jobController.getAllJobs
 );
 
