@@ -24,7 +24,9 @@ function getToken() {
     return localStorage.getItem("token");
 }
 
-async function request(method, path, body = null) {
+// services/api.js
+
+async function request(method, path, body = null, params = null) {
     const token = getToken();
 
     const options = {
@@ -35,20 +37,24 @@ async function request(method, path, body = null) {
         },
     };
 
-    if (!res.ok) {
-        const err = new Error(data.errore || "Errore sconosciuto");
-        err.status = res.status;
-        throw err;
+    // Gestione nativa del body per POST, PUT, PATCH
+    if (body && ["POST", "PUT", "PATCH"].includes(method)) {
+        options.body = JSON.stringify(body);
     }
 
+    // Costruiamo la Query String per passare i parametri (?city=... o ?search=...)
+    let urlSpecifica = `${BASE_URL}${path}`;
+    if (params) {
+        const querySearch = new URLSearchParams(params).toString();
+        if (querySearch) {
+            urlSpecifica += `?${querySearch}`;
+        }
+    }
 
-    // Gestiamo esplicitamente gli errori di rete (backend spento, no internet)
-    // separandoli dagli errori HTTP (4xx, 5xx)
     let res;
     try {
-        res = await fetch(`${BASE_URL}${path}`, options);
+        res = await fetch(urlSpecifica, options);
     } catch {
-        // fetch lancia solo per errori di rete, mai per 4xx/5xx
         throw new Error(
             "Impossibile contattare il server. Controlla che il backend sia in esecuzione.",
         );
@@ -56,9 +62,15 @@ async function request(method, path, body = null) {
 
     const data = await res.json();
 
-    // 401 = token scaduto o revocato durante la sessione → logout automatico
     if (res.status === 401) {
         window.dispatchEvent(new Event("auth:unauthorized"));
+    }
+
+    // dopo il fetch per evitare il crash di variabile indefinita
+    if (!res.ok) {
+        const err = new Error(data.errore || "Errore sconosciuto");
+        err.status = res.status;
+        throw err;
     }
 
     if (!data.successo) {
@@ -69,6 +81,7 @@ async function request(method, path, body = null) {
 
     return data.dati;
 }
+
 
 // ── Autenticazione ────────────────────────────────────────────
 export const authAPI = {
@@ -81,11 +94,20 @@ export const authAPI = {
 
 // ── Jobs ─────────────────────────────────────────────────────
 export const jobsAPI = {
-    getAllJobs: () => request("GET", "jobs"),
+    // Prende tutti i job senza filtri
+    getAllJobs: () => request("GET", "/jobs"),
+
+    // Cerca per parola chiave nel titolo
+    getJobsByKeyword: (parolaChiave) => request("GET", "/jobs", null, { search: parolaChiave }),
+
+    // Filtra contemporaneamente per città E tipo contratto
+    getJobsByFilters: (citta, tipoContratto) => request("GET", "/jobs", null, { city: citta, contract_type: tipoContratto }),
+
     createJob: (dati) => request("POST", "/jobs", dati),
     updateJob: (id, dati) => request("PATCH", `/jobs/${id}`, dati),
     deleteJob: (id) => request("DELETE", `/jobs/${id}`),
 };
+
 
 // ── application ──────────────────────────────────────────────────
 export const applicationAPI = {
