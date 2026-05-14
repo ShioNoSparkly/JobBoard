@@ -49,7 +49,7 @@ function Navbar() {
                 > Città
                 </NavLink>
 
-                <ul className="dropdown-menu dropdown-menu-dark shadow border-0 text-center w-75 mx-auto w-lg-auto mb-2 fs-5">
+                <ul className="dropdown-menu shadow border-0 text-center w-75 mx-auto w-lg-auto mb-2 fs-5">
                   <li>
                     <NavLink className="dropdown-item" to="#">
                       Milano

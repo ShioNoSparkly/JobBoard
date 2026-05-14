@@ -1,26 +1,23 @@
-function Hero(params) {
-    //esempio  utente loggato
-  const user = {
-    role: "user", // "candidate" oppure "company"
-  };
+import { useAuth } from '../context/AuthContext';
 
+function Hero() {
+  const {user} = useAuth();
 
-    const heroContent = {
-    candidate: {
+  const heroContent = {
+   candidato: {
       title: "Trova il lavoro dei tuoi sogni!",
       subtitle: "Scopri le migliori offerte disponibili per la tua carriera.",
     },
 
-    company: {
+    azienda: {
       title: "Scopri i migliori talenti!",
       subtitle: "Pubblica offerte e seleziona i candidati ideali per la tua azienda.",
     },
   };
 
-  const currentHero =
-    user.role === "company"
-      ? heroContent.company
-      : heroContent.candidate;
+  const currentHero = user?.role === "azienda"
+      ? heroContent.azienda
+      : heroContent.candidato;
 
 
     return(
