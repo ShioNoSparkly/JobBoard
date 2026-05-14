@@ -15,7 +15,7 @@ function RegisterPage() {
   async function handleSubmit(e){
     e.preventDefault();
 
-    setError('');
+    setError({});
 
     try {
       const BASE = 'http://localhost:3000';
@@ -30,7 +30,10 @@ function RegisterPage() {
     }
       setSuccess(true);
       setSuccessMessage("Registrazione avvenuta con successo!")
-      navigate("/login");
+      setTimeout(() => { navigate("/login")
+      }, 2000); 
+      
+      
     } catch (error) {
       setError({ email: error.message });
     }

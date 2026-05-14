@@ -8,21 +8,18 @@ import { MdWorkHistory } from "react-icons/md";
 import { GrNotes } from "react-icons/gr";
 import { AiFillStar } from "react-icons/ai";
 import { useAuth } from '../context/AuthContext';
-
+import { applicationAPI } from '../services/api';
 
 
 function JobDetailsPage() {
-    const [jobs, setJobs]= useState([])
-
-
     const { id } = useParams()
     const location = useLocation()
-const navigate = useNavigate();
- const { user } = useAuth();
+    const navigate = useNavigate();
+    const { user } = useAuth();
 
     let job = location.state
 
-   
+
     const [showModal, setShowModal] = useState(false)
 
     // const handleConfirm = () => { onDelete(id); setShowModal(false); };
@@ -33,7 +30,7 @@ const navigate = useNavigate();
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
 
-     const requireAuth = (callback) => {
+    const requireAuth = (callback) => {
         if (!user) {
             navigate('/login', { state: { message: 'Accedi o registrati per continuare' } })
             return
@@ -41,40 +38,47 @@ const navigate = useNavigate();
         callback()
     }
 
-    const handleCandidateSubmit = () => {
+    const handleCandidateSubmit = async () => {
         let errorText = null;
         let errorFile = null;
-setError([]);
+        setError([]);
 
         if (!coverLetter.trim()) errorText = 'Devi inserire una lettera di presentazione'
-        if (!cvFile) errorFile = 'Non è stato inserito nessun file allegato'
- if (errorText || errorFile) { return setError([errorText, errorFile]) }
+        // if (!cvFile) errorFile = 'Non è stato inserito nessun file allegato'
+        //  if (errorText || errorFile) { return setError([errorText, errorFile]) }
+
+        try {
+            await applicationAPI.apply(id, coverLetter);
 
 
-        setShowCandidateModal(false);
-        setCoverLetter('');
-        setCvFile(null);
-        setShowSuccessModal(true);
-        setTimeout(() => setShowSuccessModal(false), 3000) 
-        const toastEl = document.getElementById('candidateToast');
-        const toast = new window.bootstrap.Toast(toastEl);
-        toast.show();
+            setShowCandidateModal(false);
+            setCoverLetter('');
+            setCvFile(null);
+            setShowSuccessModal(true);
+            setTimeout(() => setShowSuccessModal(false), 3000);
+
+        } catch (err) {
+            if (err.status === 409) {
+                setError(['Ti sei già candidato per questa posizione']);
+            } else {
+                setError([err.message || 'Errore di rete, riprova più tardi']);
+            }
+        }
     };
 
+    const handleShare = async () => {
 
-const handleShare = async () => {
+        try {
 
-    try {
-
-        await navigator.share({
-            title: job.title,
-            text: `Guarda questa offerta di lavoro: ${job.title}`,
-            url: window.location.href
-        });
-    } catch (error) {
-        console.log('Condivisione annullata');
+            await navigator.share({
+                title: job.title,
+                text: `Guarda questa offerta di lavoro: ${job.title}`,
+                url: window.location.href
+            });
+        } catch (error) {
+            console.log('Condivisione annullata');
+        }
     }
-}
     if (!job) {
         return (
             <>
@@ -86,6 +90,22 @@ const handleShare = async () => {
         )
     }
 
+    if (!user) {
+        return (
+
+           
+                <section className="hero-section d-flex align-items-center py-5 bg-img-2">
+                     <div className= "overlay z-0"></div>
+                    <div className="container py-5 text-center text-dark rounded-4 bg-img-2">
+                        <h4 className='fw-semibold fs-1 mt-3 '>Registrati o accedi per vedere i dettagli dell'annuncio!</h4>
+                    </div>
+                </section>
+
+
+
+        );
+    }
+
     return (
         <>
             <div className="container py-5">
@@ -93,13 +113,13 @@ const handleShare = async () => {
                     <div className="col-lg-8 d-flex flex-column gap-4">
                         <div className="card shadow-sm border-0 p-4">
                             <h1 className="fw-bold mb-5">{job.title}</h1>
-                            <p><SiGooglemaps className='fs-5 text-danger mb-1 mx-2'/> {job.city}</p>
-                            <p><MdWorkHistory className='fs-5 text-primary mb-1 mx-3'/>{job.contract_type}</p>
+                            <p><SiGooglemaps className='fs-5 text-danger mb-1 mx-2' /> {job.city}</p>
+                            <p><MdWorkHistory className='fs-5 text-primary mb-1 mx-3' />{job.contract_type}</p>
                             <p><MdOutlineEuro className='fs-5 text-success mb-1 mx-2' /> {job.salary}</p>
                         </div>
                         <div className="card shadow-sm border-0 p-4 flex-grow-1 align-items-center">
                             <GrNotes className='fs-2 text-primary mb-4 mx-2' />
-                            <h4  className="fw-semibold mb-5">Descrizione lavoro</h4>
+                            <h4 className="fw-semibold mb-5">Descrizione lavoro</h4>
                             <p>{job.description}</p>
                         </div>
                     </div>
@@ -135,18 +155,17 @@ const handleShare = async () => {
                                 </>
                             )}
 
-                            <button className="btn btn-outline-secondary w-100 mb-2">
-                                Aggiungi ai preferiti <AiFillStar className='mb-1' />
-                            </button>
-
-                            <button className="btn btn-outline-dark w-100"  
-                            onClick={handleShare}>Condividi
+                            <button className="btn btn-outline-dark w-100"
+                                onClick={handleShare}>Condividi
                             </button>
                             <hr />
 
                             <small className="text-muted">
                                 Pubblicato recentemente • 10 candidati
                             </small>
+                            <div>
+                                <img src="" alt="" />
+                            </div>
                         </div>
                     </div>
                 </div>

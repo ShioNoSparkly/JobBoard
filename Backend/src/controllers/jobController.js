@@ -57,7 +57,7 @@ const getAllJobs = async (req, res) => {
         res
             .json({
                 successo: true,
-                data: jobs
+                dati: jobs
             });
     } catch (err) {
         res

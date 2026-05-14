@@ -67,8 +67,31 @@ async function request(method, path, body = null) {
 
 // ── Autenticazione ────────────────────────────────────────────
 export const authAPI = {
-  login: (email, password) =>
-    request("POST", "/auth/login", { email, password }),
+  // login: (email, password) =>
+  //   request("POST", "/auth/login", { email, password }),
+
+  login: async (email, password) => {
+    let res;
+    try {
+      res = await fetch(`${BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+    } catch {
+      throw new Error('Impossibile contattare il server. Controlla che il backend sia in esecuzione.');
+    }
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.errore || data.message || 'Errore login');
+    }
+
+    // Salva il token nel localStorage (come fa getToken())
+    localStorage.setItem('token', data.token);
+    return data; // restituisce { token, user }
+  },
 
   registra: (nome, email, password, role) =>
     request("POST", "/auth/registra", { nome, email, password, role }),
@@ -76,7 +99,7 @@ export const authAPI = {
 
 // ── Jobs ─────────────────────────────────────────────────────
 export const jobsAPI = {
-  getAllJobs: () => request("GET", "jobs"),
+  getAllJobs: () => request("GET", "/jobs"),
   createJob: (dati) => request("POST", "/jobs", dati),
   updateJob: (id, dati) => request("PATCH", `/jobs/${id}`, dati),
   deleteJob: (id) => request("DELETE", `/jobs/${id}`),

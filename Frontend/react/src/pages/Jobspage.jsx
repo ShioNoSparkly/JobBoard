@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import JobCard from "../components/JobCard"
 import Hero from '../components/Hero'
-
+import { jobsAPI } from '../services/api'
 
 function Jobspage() {
   const [jobs, setJobs] = useState([]);
@@ -10,19 +10,14 @@ function Jobspage() {
 
 
   useEffect(() => {
- const token = localStorage.getItem('token')
-const headers = token
-    ? { 'Authorization': `Bearer ${token}` }
-    : {};
     
-    fetch('http://localhost:3000/api/jobs', { headers })
-      .then(res => res.json())
-      .then(data => {
-        setJobs(data.data || []);
-        setLoading(false);
+ jobsAPI.getAllJobs()
+    .then(data => {
+      setJobs(data || []);
+      setLoading(false);
       })
       .catch(err => {
-        setError('Errore nel caricamento dei lavori');
+         setError(err.message || 'Errore nel caricamento dei lavori');
         setLoading(false);
       });
   }, []);
@@ -30,40 +25,9 @@ const headers = token
   if (loading) return <p className="text-center mt-5">Caricamento...</p>;
   if (error) return <p className="text-center text-danger mt-5">{error}</p>;
 
-  // const heroContent = {
-  //   candidate: {
-  //     title: "Trova il lavoro dei tuoi sogni!",
-  //     subtitle: "Scopri le migliori offerte disponibili per la tua carriera.",
-  //   },
-
-  //   company: {
-  //     title: "Scopri i migliori talenti!",
-  //     subtitle: "Pubblica offerte e seleziona i candidati ideali per la tua azienda.",
-  //   },
-  // };
-
-  // const currentHero =
-  //   user.role === "company"
-  //     ? heroContent.company
-  //     : heroContent.candidate;
-
-
-
   return (
     <>
       <Hero />
-      {/* <section className="hero-section d-flex align-items-center py-5 bg-img-2">
-        <div className= "overlay z-0"></div>
-          <div className="container py-5 position-relative">
-            <h1 className="display-3 fw-bold mb-3 text-dark z-1">
-               {currentHero.title}
-            </h1>
-            <p className="lead text-dark fw-bold fs-4">
-               {currentHero.subtitle}
-            </p>
-          </div>
-      </section> */}
-
       <section className="py-5 bg-light">
         <div className="container">
           <div className="row g-4">

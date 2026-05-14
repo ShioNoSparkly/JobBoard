@@ -21,7 +21,7 @@ const apply = async (req, res) => {
             .status(201)
             .json({
                 message: "Candidatura inviata con successo",
-                data: newApplication
+                dati: newApplication
             });
     } catch (err) {
         // errori tipo "Ti sei già candidato" (400) o "Job non trovato" (404)
@@ -48,7 +48,7 @@ const updateStatus = async (req, res) => {
             .json({
                 successo: true,
                 message: "Stato candidatura aggiornato",
-                data: updatedApplication
+                dati: updatedApplication
             });
     } catch (err) {
         // Gestiamo se l'azienda prova a modificare 
@@ -72,7 +72,7 @@ const getMyApplications = async (req, res) => {
 
         res.json({
             successo: true,
-            data: applications
+            dati: applications
         });
     } catch (err) {
         res.status(err.statusCode || 500).json({
@@ -96,7 +96,7 @@ const getApplicationsByJob = async (req, res) => {
         res
             .json({
                 successo: true,
-                data: applications
+                dati: applications
             });
     } catch (err) {
         res
