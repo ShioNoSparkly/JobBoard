@@ -56,7 +56,7 @@ async function request(method, path, body = null) {
     window.dispatchEvent(new Event("auth:unauthorized"));
   }
 
-  if (!data.successo) {
+  if (!res.ok) {
     const err = new Error(data.errore || "Errore sconosciuto");
     err.status = res.status;
     throw err;
