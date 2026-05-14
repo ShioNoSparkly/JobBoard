@@ -9,6 +9,7 @@ import CosaPuoiTrovare from '../components/CosaPuoiTrovare';
 import CompAzienda from '../components/CompAzienda';
 import CompUtente from '../components/CompUtente';
 import { SiGooglemaps } from "react-icons/si";
+import { FaSearch } from "react-icons/fa";
 
 
 function Jobspage() {
@@ -17,24 +18,24 @@ function Jobspage() {
   const [error, setError] = useState(null);
   const [searchParams] = useSearchParams();
   const selectedCity = searchParams.get('city')
+  const searchQuery = searchParams.get('search');
 
 
   useEffect(() => {
-    
- jobsAPI.getAllJobs()
-    .then(data => {
-      setJobs(data || []);
-      setLoading(false);
-      })
-      .catch(err => {
-         setError(err.message || 'Errore nel caricamento dei lavori');
-        setLoading(false);
-      });
-  }, []);
+    setLoading(true);
 
-  const filteredJobs = selectedCity
-    ? jobs.filter(job => job.city?.toLowerCase() === selectedCity.toLowerCase())
-    : jobs;
+  const filters = {};
+  if (selectedCity) filters.city = selectedCity;
+  if (searchQuery)  filters.search = searchQuery;
+ jobsAPI.getAllJobs(filters)
+    .then(data => { setJobs(data || []); setLoading(false); })
+    .catch(err => { setError(err.message); setLoading(false); });
+
+  }, [selectedCity, searchQuery]);
+
+  // const filteredJobs = selectedCity
+  //   ? jobs.filter(job => job.city?.toLowerCase() === selectedCity.toLowerCase())
+  //   : jobs;
 
   if (loading) return <p className="text-center mt-5">Caricamento...</p>;
   if (error) return <p className="text-center text-danger mt-5">{error}</p>;
@@ -55,15 +56,33 @@ function Jobspage() {
               </a>
             </div>
           )}
+
+          {searchQuery && (
+            <div className="d-flex fs-3 align-items-center gap-2 mb-4">
+              <FaSearch className='fs-5 text-primary' />
+              "{searchQuery}"
+              <a href="/" className="btn btn-sm btn-outline-danger mx-2 fs-6">
+                Rimuovi filtro
+              </a>
+            </div>
+          )}
           
          <div className="row g-4">
-            {filteredJobs.length > 0 ? (
-              filteredJobs.map((job) => (
-                <JobCard key={job.id} job={job} />
+           {jobs.length > 0 ? (
+              jobs.map((job, index) => (
+                <JobCard
+                  key={job.id}
+                  job={job}
+                  style={{ animationDelay: `${index * 0.08}s` }}
+                />
               ))
             ) : (
               <p className="text-center text-muted">
-                Nessun annuncio disponibile a {selectedCity}.
+                {selectedCity
+                  ? `Nessun annuncio disponibile a ${selectedCity}.`
+                  : searchQuery
+                    ? `Nessun risultato per "${searchQuery}".`
+                    : 'Nessun annuncio disponibile.'}
               </p>
             )}
           </div>

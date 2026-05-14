@@ -42,7 +42,7 @@ function ModalCandidate({
                         </div>
 
 
-                        <div className="mb-3">
+                        {/* <div className="mb-3">
                             <label className="form-label">
                                 Carica CV
                             </label>
@@ -52,7 +52,7 @@ function ModalCandidate({
                                 onChange={(e) =>
                                     setCvFile(e.target.files[0])} />
                                     {(error && <small className='text-danger'>{error[1]}</small>)}
-                        </div>
+                        </div> */}
                           
                     </div>
 

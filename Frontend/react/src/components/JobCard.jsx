@@ -3,8 +3,9 @@ import { RiCloseCircleLine } from "react-icons/ri"
 import { useState } from 'react';
 import ModalDelete from './ModalDelete';
 import { useAuth } from '../context/AuthContext';
+import { FcApproval } from "react-icons/fc";
 
-function JobCard({ job }) {
+function JobCard({ job, style }) {
   const { user } = useAuth();
   const navigate = useNavigate();
 const [showModal, setShowModal] = useState(false);
@@ -17,11 +18,12 @@ const handleConfirm = () => {
 
   return (
 
-    <div className="col-md-6 col-lg-4">
+    <div className="col-md-6 col-lg-4 job-card-animate" style={style} >
       <div className="card h-100 border-0 shadow rounded-4 position-relative">
 
 
-        <div className="card-body d-flex flex-column"> 
+        <div className="card-body d-flex flex-column gap-2"> 
+          <FcApproval className="fs-1 mx-auto"/>
           <h4 className="fw-bold mb-3">{job.title}</h4>
 
           <small className="text-muted mb-2"> Company ID: {job.company_id} </small>
@@ -36,7 +38,7 @@ const handleConfirm = () => {
           </div>
           <p className="text-muted flex-grow-1"> {job.description}</p>
           <div className="d-flex justify-content-between align-items-center mt-3"><strong>{job.salary}</strong>
-            <button className="btn btn-primary btn-sm" onClick={() => navigate(`/jobs/${job.id}`, { state: job})}>
+            <button className="btn btn-outline-primary btn-sm" onClick={() => navigate(`/jobs/${job.id}`, { state: job})}>
               Dettagli
             </button>
           </div>
