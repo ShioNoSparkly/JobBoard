@@ -14,6 +14,7 @@ function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const isDashboard = location.pathname === "/company" || location.pathname === "/user";
+  const isHome = location.pathname === "/";
 
 
 
@@ -54,28 +55,27 @@ function Navbar() {
                 </NavLink>
 
               </li>
-              <li className="nav-item dropdown d-flex">
-                <NavLink
-                  className="nav-link dropdown-toggle fs-4"
-                  to="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                > Città
-                </NavLink>
-
-                <ul className="dropdown-menu shadow border-0 text-center w-75 mx-auto w-lg-auto mb-2 fs-5">
-  {["Milano", "Torino", "Roma", "Napoli", "Palermo"].map((città) => (
-    <li key={città}>
-      <NavLink className="dropdown-item" to={`/annunci?città=${città}`}>
-        {città}
-      </NavLink>
-    </li>
-  ))}
-</ul>
-
-
-              </li>
+              {isHome && (
+                <li className="nav-item dropdown d-flex">
+                  <NavLink
+                    className="nav-link dropdown-toggle fs-4"
+                    to="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  > Città
+                  </NavLink>
+                  <ul className="dropdown-menu shadow border-0 text-center w-75 mx-auto w-lg-auto mb-2 fs-5">
+                    {["Milano", "Torino", "Roma", "Napoli", "Palermo"].map((city) => (
+                      <li key={city}>
+                        <NavLink className="dropdown-item" to={`/?city=${city}`}>
+                          {city}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              )}
             </ul>
 
             <form

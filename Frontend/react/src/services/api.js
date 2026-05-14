@@ -35,7 +35,14 @@ async function request(method, path, body = null) {
         },
     };
 
-    if (body) options.body = JSON.stringify(body);
+  if (!res.ok) {
+    const err = new Error(data.errore || "Errore sconosciuto");
+    err.status = res.status;
+    throw err;
+  }
+
+  return data.dati;
+}
 
     // Gestiamo esplicitamente gli errori di rete (backend spento, no internet)
     // separandoli dagli errori HTTP (4xx, 5xx)

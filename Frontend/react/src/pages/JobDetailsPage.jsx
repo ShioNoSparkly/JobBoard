@@ -55,7 +55,10 @@ function JobDetailsPage() {
             setCoverLetter('');
             setCvFile(null);
             setShowSuccessModal(true);
-            setTimeout(() => setShowSuccessModal(false), 3000);
+            setTimeout(() => {
+                setShowSuccessModal(false);
+                navigate('/user');
+            }, 3000);
 
         } catch (err) {
             if (err.status === 409) {
