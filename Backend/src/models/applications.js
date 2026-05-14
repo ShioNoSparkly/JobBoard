@@ -7,7 +7,7 @@
 const pool = require("../config/db");
 
 const CREATE_TABLE = `
-  CREATE TABLE applications (
+  CREATE TABLE IF NOT EXISTS applications (
         id                SERIAL PRIMARY KEY,         
         candidate_id      INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
         job_id            INTEGER NOT NULL REFERENCES job_listings(id) ON DELETE CASCADE,

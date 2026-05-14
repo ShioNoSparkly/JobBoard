@@ -37,10 +37,15 @@ console.log("Ciao dal router job")
 //    next();
 // }, jobController.createJob);
 
+// GET /api/jobs/company — Lista di tutti gli annunci dell'Azienda
+router.get("/company",
+    autenticato,
+    soloAzienda,
+    jobController.getCompanyJobs
+);
 
 // GET /api/jobs — Lista di tutti gli annunci
 router.get("/",
-    // autenticato,
     jobController.getAllJobs
 );
 

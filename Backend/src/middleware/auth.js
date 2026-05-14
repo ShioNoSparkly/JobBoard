@@ -125,10 +125,12 @@ const soloSéOAzienda = (req, res, next) => {
     return next();
   }
 
-  return res.status(403).json({
-    successo: false,
-    errore: "Non hai i permessi per accedere a questa risorsa",
-  });
+  return res
+    .status(403)
+    .json({
+      successo: false,
+      errore: "Non hai i permessi per accedere a questa risorsa",
+    });
 };
 
 

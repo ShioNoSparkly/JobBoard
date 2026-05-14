@@ -17,7 +17,7 @@ const createJob = async (req, res) => {
             .json({
                 successo: true,
                 message: "Annuncio pubblicato con successo",
-                data: job
+                dati: job
             });
     } catch (err) {
         res
@@ -38,7 +38,7 @@ const getJobById = async (req, res) => {
         res
             .json({
                 successo: true,
-                data: job
+                dati: job
             });
     } catch (err) {
         res
@@ -62,6 +62,28 @@ const getAllJobs = async (req, res) => {
     } catch (err) {
         res
             .status(500)
+            .json({
+                successo: false,
+                error: err.message
+            });
+    }
+};
+
+// Recupera tutti gli annunci per Azienda
+const getCompanyJobs = async (req, res) => {
+    try {
+        // Estratto dal token JWT
+        // Forza la conversione a numero intero (base 10)
+        const companyId = parseInt(req.user.id, 10);
+        const jobs = await jobService.getJobsPerCompany(companyId);
+        res
+            .json({
+                successo: true,
+                dati: jobs
+            });
+    } catch (err) {
+        res
+            .status(err.statusCode || 500)
             .json({
                 successo: false,
                 error: err.message
@@ -114,7 +136,7 @@ const updateJob = async (req, res) => {
             .json({
                 successo: true,
                 message: "Annuncio modificato con successo",
-                data: updatedJob
+                dati: updatedJob
             });
     } catch (err) {
         res
@@ -130,6 +152,7 @@ module.exports = {
     createJob,
     getJobById,
     getAllJobs,
+    getCompanyJobs,
     deleteJob,
     updateJob
 };
