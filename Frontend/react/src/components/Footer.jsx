@@ -14,7 +14,9 @@ const Footer = () => {
             <ul className="nav flex-column">
               <li className="nav-item">Chiamaci: +39 123 456 7891</li>
               <li className="nav-item">Email: contatti@jobboard-agency.it</li>
-              <li className="nav-item">Sede principale: Via Roma 1, 00100 Roma&nbsp;(RM)</li>
+              <li className="nav-item">
+                Sede principale: Via Roma 1, 00100 Roma&nbsp;(RM)
+              </li>
             </ul>
           </div>
           <div className="col-md-3 mb-3">
@@ -37,7 +39,6 @@ const Footer = () => {
                 </NavLink>
               </li>
 
-              
               <li className="nav-item">
                 <NavLink
                   to="/termini"
@@ -55,16 +56,16 @@ const Footer = () => {
               Abbiamo raccolto le domande più frequenti per aiutarti subito.
             </p>
 
-            <div className="dropdown">
+            <div
+              className="dropdown"
+              onMouseEnter={() => setShowDropdown(true)}
+              onMouseLeave={() => setShowDropdown(false)}
+            >
               <button
-                className="btn btn-outline-primary btn-sm w-100 text-start d-flex justify-content-between align-items-center"
+                className="btn btn-primary dropdown-toggle w-100 d-flex justify-content-between align-items-center"
                 type="button"
-                onClick={() => setShowDropdown(!showDropdown)}
               >
                 Seleziona un argomento...
-                <FaChevronDown
-                  className={`ms-2 ${showDropdown ? "rotate-180" : ""}`}
-                />
               </button>
 
               <ul
