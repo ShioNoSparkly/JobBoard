@@ -31,9 +31,10 @@ const getAllJobs = async () => {
 };
 
 const deleteJob = async (jobId, companyId) => {
-    // Controlla prima se esiste e appartiene all'azienda
+
     const job = await getJobById(jobId);
 
+    // Controlla prima se esiste e appartiene all'azienda
     if (job.company_id !== companyId) {
         const err = new Error("Non sei autorizzato a eliminare questo annuncio");
         err.statusCode = 403;
