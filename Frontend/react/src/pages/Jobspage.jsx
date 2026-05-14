@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import JobCard from "../components/JobCard"
 import Hero from '../components/Hero'
+import Collaborazioni from '../components/Collaborazioni';
+import Aziende from '../components/Aziende';
+import CosaPuoiTrovare from '../components/CosaPuoiTrovare';
+import CompAzienda from '../components/CompAzienda';
+import CompUtente from '../components/CompUtente';
 
 
 function Jobspage() {
@@ -79,6 +84,13 @@ const [loading, setLoading] = useState(true);
           </div>
         </div>
       </section>
+      <Aziende/>
+      <Collaborazioni/>
+      <CosaPuoiTrovare/>
+      <CompAzienda/>
+      <CompUtente/>
+
+      
     </>
   );
 }

@@ -15,6 +15,7 @@ import CookiePage from './pages/CookiePage'
 import ComeCandidarsiPage from './pages/ComeCandidarsiPage'
 import TempiSelezione from './pages/TempiSelezionePage'
 import ProtectedRoute from './components/ProtectedRoutes';
+import CaricaCvPage from "./pages/CaricaCVPage";
 
 import { useState } from 'react'
 
@@ -41,7 +42,7 @@ function App() {
             <Route path="/cookie" element={<CookiePage />} />
             <Route path="/come-candidarsi" element={<ComeCandidarsiPage />} />
             <Route path="/tempi-selezione" element={<TempiSelezione />} />
-
+            <Route path="/carica-cv" element={<CaricaCvPage />} />
 
 
 
