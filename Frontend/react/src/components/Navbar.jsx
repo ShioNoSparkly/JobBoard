@@ -3,16 +3,20 @@ import { FaSearch } from "react-icons/fa";
 import { AiFillStar } from "react-icons/ai";
 import logo from "../assets/logo.webp";
 import { useState } from "react";
-
-
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 
 
 
 function Navbar() {
-  const [user, setUser] = useState(null)
+const { user, logout} = useAuth();
+const navigate = useNavigate();
 
-  const logout = () => { setUser(null); };
+const handleLogout = () => {
+    logout();
+    navigate("/jobs");
+  };
 
   return (
     <>
@@ -78,25 +82,34 @@ function Navbar() {
                 </ul>
               </li>
             </ul>
-            <form
-              className="d-flex mx-auto ms-lg-auto me-lg-0 mt-2 mt-lg-0 mb-2 gap-1"
-              role="search">
-              <input
-                className="form-control form-control-sm me-2 w-75 fs-5"
-                type="search"
-                placeholder="Cerca"
-                aria-label="Search"
-              />
-              <button
-                className="btn btn-outline-primary me-2 d-flex align-items-center justify-content-center"
-                type="submit"
-              >
-                <FaSearch className='fs-5' />
-              </button>
-              <NavLink to="/login" className="btn btn-outline-primary fs-5" type="button">
-                Accedi
-              </NavLink>
-            </form>
+           
+      <form
+        className="d-flex ms-lg-auto mt-2 mt-lg-0 mb-2 gap-1"
+        role="search"
+      >
+        <input
+          className="form-control form-control-sm me-2 w-75 fs-5"
+          type="search"
+          placeholder="Cerca"
+          aria-label="Search"
+        />
+        <button
+          className="btn btn-outline-primary me-2 d-flex align-items-center justify-content-center"
+          type="submit"
+        >
+          <FaSearch className="fs-5" />
+        </button>
+
+        {user ? (
+          <button className="btn btn-outline-danger fs-5"onClick={handleLogout}>
+            Esci
+          </button>
+        ) : (
+          <NavLink to="/login" className="btn btn-outline-primary fs-5">
+            Accedi
+          </NavLink>
+        )}
+      </form>
           </div>
         </div>
       </nav>

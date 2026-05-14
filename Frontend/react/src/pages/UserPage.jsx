@@ -7,6 +7,7 @@ function UserPage() {
   const [applications, setApplications] = useState([]);
   const [featuredJobs, setFeaturedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+const token = localStorage.getItem('token');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
