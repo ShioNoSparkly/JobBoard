@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 
 // 'pg' è il pacchetto Node.js che ci permette di connetterci a PostgreSQL
@@ -7,10 +8,10 @@ const { Pool } = require('pg');
 // Invece di aprire e chiudere una connessione ad ogni query,
 // il pool ne mantiene alcune aperte e pronte, migliorando le performance.
 const pool = new Pool({
-  host:     process.env.DB_HOST,
-  port:     process.env.DB_PORT,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
   database: process.env.DB_NAME,
-  user:     process.env.DB_USER,
+  user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
 });
 

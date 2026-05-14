@@ -1,4 +1,4 @@
-const userModel = require("../models/users");
+const usersModel = require("../models/users");
 const bcrypt = require("bcrypt");
 
 const SALT_ROUND = 12;
@@ -24,14 +24,14 @@ const seedAzienda = async () => {
   }
 
   try {
-    const verificaUtente = await userModel.findByEmail(email);
+    const verificaUtente = await usersModel.findByEmail(email);
     if (verificaUtente.rows.length) {
       console.log("ℹ️  Azienda già presente, seeder saltato.");
       return;
     }
 
     const hash = await bcrypt.hash(password, SALT_ROUND);
-    await userModel.create({ nome, email, password: hash, role: "azienda" });
+    await usersModel.create({ nome, email, password: hash, role: "azienda" });
     console.log(`✅ Azienda creata: ${email}`);
   } catch (err) {
     // Non blocchiamo l'avvio del server se il seeder fallisce
