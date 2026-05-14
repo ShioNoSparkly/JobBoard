@@ -13,6 +13,8 @@ dist-ssr
 *.local
 
 .env
+crea_readme.py
+README.md
 
 # Editor directories and files
 .vscode/*
