@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 
-
+import  {AuthProvider}  from './context/AuthContext';
 import MainLayout from './layouts/MainLayout'
 import Hero from './components/Hero'
 import Jobspage from './pages/Jobspage'
@@ -23,6 +23,7 @@ function App() {
 
   return (
     <>
+    <AuthProvider>
       <Routes>
         <Route path='/' element={<MainLayout />}>
 
@@ -42,6 +43,7 @@ function App() {
 
         </Route>
       </Routes>
+      </AuthProvider>
     </>
   );
 }

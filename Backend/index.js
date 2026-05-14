@@ -1,6 +1,7 @@
 
 
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 // Importiamo le rotte
@@ -9,6 +10,11 @@ const userRoutes = require('./src/routes/users.routes');
 const applicationRoutes = require('./src/routes/application.routes');
 
 // const authRoutes = require('./src/routes/authRoutes');
+
+app.use(cors({
+  origin: 'http://localhost:5173',   
+  credentials: true
+}));
 
 // Middleware per leggere il formato JSON 
 app.use(express.json());

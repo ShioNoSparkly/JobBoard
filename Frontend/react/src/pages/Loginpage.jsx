@@ -1,58 +1,54 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext';
 
 function Loginpage() {
 const navigate = useNavigate()
+const { login } = useAuth();
 
 
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
    const [error, setError] = useState([]);
+   const [success, setSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
-   const handleSubmit = (e) => {
+   async function handleSubmit(e) {
       e.preventDefault();
-      // MOMENTANEA PER TEST SENZA DATI BACKEND
-      let user = [
-         {
-            id: 1,
-            email: "admin@admin.it",
-            password: "Password123!",
-            name: "Pippo",
-            role: "azienda"
-         },
-         {
-            id: 2,
-            email: "user@user.it",
-            password: "Password123!",
-            name: "PippoUser",
-            role: "candidato"
-         }
-      ]
+      setError('')
 
-      const foundEmail = user.find(u => u.email === email);
+       try {
+      const BASE = 'http://localhost:3000';
+      const res = await fetch(`${BASE}/api/auth/login`, {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/json'},
+        body: JSON.stringify({email, password})
+    }) 
 
-      const foundPsw = foundEmail ? foundEmail.password === password : false;
+    const data = await res.json();
 
+    if(!res.ok){
+  throw new Error(data.errore || 'Errore login')
+    }
+login(data.user, data.token);
 
-      let errorEmail = !foundEmail ? "Email non valida" : "";
-      let errorPsw = !foundPsw ? "Password non valida" : "";
+      setSuccess(true);
+      setSuccessMessage("Login avvenuto con successo!")
 
-      let errors = []
-      errors.push(errorEmail)
-      errors.push(errorPsw)
+     
 
-      setError(errors)
-
-
-      if (foundEmail && foundPsw) {
-         if (foundEmail.role === 'azienda') {
+       if (data.user.role === 'azienda') {
             navigate('/company');
          } else {
             navigate('/user');
          }
-         //---------------------------------------------//
-      };
+
+    } catch (error) {
+      setError({ email: error.message });
+    }
+
+      
    }
 
    return (

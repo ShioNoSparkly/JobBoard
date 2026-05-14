@@ -6,67 +6,35 @@ function RegisterPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [ruolo, setRuolo] = useState("");
-  const [nome, setNome] = useState("");
+  const [role, setRole] = useState("");
+  const [name, setName] = useState("");
   const [error, setError] = useState({});
   const [success, setSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e){
     e.preventDefault();
 
-    // MOMENTANEA PER TEST SENZA DATI BACKEND
-    let user = [
-      {
-        id: 1,
-        email: "admin@admin.it",
-        password: "Password123!",
-        name: "Pippo",
-        role: "azienda"
-      },
-      {
-        id: 2,
-        email: "user@user.it",
-        password: "Password123!",
-        name: "PippoUser",
-        role: "candidato"
-      }
-    ]
+    setError('');
 
+    try {
+      const BASE = 'http://localhost:3000';
+      const res = await fetch(`${BASE}/api/auth/registra`, {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/json'},
+        body: JSON.stringify({email, password, name, role})
+    }) 
+    if(!res.ok){
+        const data = await res.json()
+        throw new Error(data.errore || 'Errore registrazione')
+    }
+      setSuccess(true);
+      setSuccessMessage("Registrazione avvenuta con successo!")
+      navigate("/login");
+    } catch (error) {
+      setError({ email: error.message });
+    }
 
-    let newErrors = {};
-
-    if (!email.trim()) newErrors.email = "Email obbligatoria"
-    if (!password.trim()) newErrors.password = "Password obbligatoria"
-    if (!nome.trim()) newErrors.nome = "Nome obbligatorio"
-    if (!ruolo) newErrors.ruolo = "Seleziona un ruolo"
-
-    setError(newErrors);
-
-    if (Object.keys(newErrors).length > 0) return;
-
-    setEmail("");
-  setPassword("");
-  setNome("");
-  setRuolo("");
-  setError({});
-
-  setSuccess(true);
-  setSuccessMessage("Registrazione avvenuta con successo!")
-
-  setTimeout(() => {
-    setSuccess(false);
-    navigate("/login");
-  }, 3000);
-
-
-
-    console.log("REGISTER DATA:", {
-      email,
-      password,
-      nome,
-      ruolo
-    });
   };
 
 
@@ -124,13 +92,13 @@ function RegisterPage() {
                         <input
                           type="text"
                           className="form-control form-control-lg"
-                          value={nome}
-                          onChange={(e) => setNome(e.target.value)}
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
                           placeholder="Inserisci nome"
                         />
-                        {error.nome && (
+                        {error.name && (
                           <div className="text-danger mt-1">
-                            {error.nome}
+                            {error.name}
                           </div>
                         )}
                       </div>
@@ -141,10 +109,10 @@ function RegisterPage() {
                             className="form-check-input"
                             type="radio"
                             id="scelta1"
-                            name="gruppo"
-                            value="1"
-                            checked={ruolo === "1"}
-                            onChange={(e) => setRuolo(e.target.value)}
+                            name="azienda"
+                            value="azienda"
+                            checked={role === "azienda"}
+                            onChange={(e) => setRole(e.target.value)}
                           />
 
                           <label className="form-check-label" htmlFor="Azienda">
@@ -156,18 +124,18 @@ function RegisterPage() {
                             className="form-check-input"
                             type="radio"
                             id="scelta2"
-                            name="gruppo"
-                            value="2"
-                            checked={ruolo === "2"}
-                            onChange={(e) => setRuolo(e.target.value)}
+                            name="candidato"
+                            value="candidato"
+                            checked={role === "candidato"}
+                            onChange={(e) => setRole(e.target.value)}
                           />
                           <label className="form-check-label" htmlFor="Candidato">
                             Candidato
                           </label>
                         </div>
-                        {error.ruolo && (
+                        {error.role && (
                           <div className="text-danger mt-2">
-                            {error.ruolo}
+                            {error.role}
                           </div>
                         )}
                       </div>
