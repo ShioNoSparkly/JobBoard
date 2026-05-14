@@ -1,6 +1,7 @@
 
 
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 // Importiamo le rotte
@@ -18,6 +19,13 @@ app.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`);
     next();
 });
+
+// Configurazione per CORS per accettare richieste solo dal frontend sulla porta giusta
+app.use(cors({
+    origin: 'http://localhost:5173', // URL esatto del frontend 
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Montiamo le rotte con il prefisso /api
 app.use('/api/jobs', jobRoutes);
