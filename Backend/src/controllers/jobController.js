@@ -12,16 +12,20 @@ const createJob = async (req, res) => {
         const companyId = req.user.id; // Preso dal JWT
         const job = await jobService.createJob(req.body, companyId);
 
-        res.status(201).json({
-            successo: true,
-            message: "Annuncio pubblicato con successo",
-            data: job
-        });
+        res
+            .status(201)
+            .json({
+                successo: true,
+                message: "Annuncio pubblicato con successo",
+                data: job
+            });
     } catch (err) {
-        res.status(err.statusCode || 500).json({
-            successo: false,
-            error: err.message
-        });
+        res
+            .status(err.statusCode || 500)
+            .json({
+                successo: false,
+                error: err.message
+            });
     }
 };
 
@@ -31,15 +35,18 @@ const getJobById = async (req, res) => {
         const { id } = req.params;
         const job = await jobService.getJobById(parseInt(id, 10));
 
-        res.json({
-            successo: true,
-            data: job
-        });
+        res
+            .json({
+                successo: true,
+                data: job
+            });
     } catch (err) {
-        res.status(err.statusCode || 500).json({
-            successo: false,
-            error: err.message
-        });
+        res
+            .status(err.statusCode || 500)
+            .json({
+                successo: false,
+                error: err.message
+            });
     }
 };
 
@@ -47,15 +54,18 @@ const getJobById = async (req, res) => {
 const getAllJobs = async (req, res) => {
     try {
         const jobs = await jobService.getAllJobs();
-        res.json({
-            successo: true,
-            data: jobs
-        });
+        res
+            .json({
+                successo: true,
+                data: jobs
+            });
     } catch (err) {
-        res.status(500).json({
-            successo: false,
-            error: err.message
-        });
+        res
+            .status(500)
+            .json({
+                successo: false,
+                error: err.message
+            });
     }
 };
 
@@ -63,43 +73,56 @@ const getAllJobs = async (req, res) => {
 // Elimina un annuncio (Solo azienda proprietaria)
 const deleteJob = async (req, res) => {
     try {
-        const { id } = req.params;
-        // const jobId = parseInt(req.params.id, 10); ulteriore controllo su id che sia un intero
+        //Forza la conversione in numero intero prima di passarlo al service
+        const jobId = parseInt(req.params.id, 10);
+        // alternativa sarebbe:
+        //const { id } = req.params; con la destrutturazione
+        //const jobId = parseInt(id, 10);
+
         const companyId = req.user.id;
 
+        // Il service verificherà se l'annuncio esiste e se appartiene a questa azienda,
+        // poi procederà con l'eliminazione dal database
         await jobService.deleteJob(jobId, companyId);
-        res.status(200).json({
-            successo: true,
-            message: "Annuncio eliminato con successo"
-        });
+        res
+            .status(200)
+            .json({
+                successo: true,
+                message: "Annuncio eliminato con successo"
+            });
     } catch (err) {
-        res.status(err.statusCode || 500).json({
-            successo: false,
-            error: err.message
-        });
+        res
+            .status(err.statusCode || 500)
+            .json({
+                successo: false,
+                error: err.message
+            });
     }
 };
 
 // Aggiorna un annuncio esistente
 const updateJob = async (req, res) => {
     try {
-        const { id } = req.params;
-        //const jobId = parseInt(req.params.id, 10);  ulteriore controllo su id che sia un intero
+        //Forza la conversione in numero intero prima di passarlo al service
+        const jobId = parseInt(req.params.id, 10);
         const companyId = req.user.id; // Preso sempre dal token JWT
 
         // Il service verificherà la proprietà dell'annuncio prima di aggiornare nel model
         const updatedJob = await jobService.updateJob(jobId, req.body, companyId);
 
-        res.json({
-            successo: true,
-            message: "Annuncio modificato con successo",
-            data: updatedJob
-        });
+        res
+            .json({
+                successo: true,
+                message: "Annuncio modificato con successo",
+                data: updatedJob
+            });
     } catch (err) {
-        res.status(err.statusCode || 500).json({
-            successo: false,
-            error: err.message
-        });
+        res
+            .status(err.statusCode || 500)
+            .json({
+                successo: false,
+                error: err.message
+            });
     }
 };
 
