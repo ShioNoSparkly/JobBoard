@@ -1,69 +1,57 @@
+import { useState, useEffect } from 'react';
 import JobCard from "../components/JobCard"
 import Hero from '../components/Hero'
 
+
 function Jobspage() {
-  // const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState([]);
+const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+ 
 
-  //    useEffect(() => {
-  //   axios.get('/jobs')
-  //     .then(res => setJobs(res.data));
-  // }, []);
+   useEffect(() => {
+   
+    const token = localStorage.getItem('token');
+    
+    fetch('http://localhost:3000/api/jobs', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(res => {
+  console.log('STATUS:', res.status);
+  return res.json();
+})
+.then(data => {
+  console.log('DATA:', data);
+  setJobs(data.data || []);
+  setLoading(false);
+})
+      .catch(err => {
+        setError('Errore nel caricamento dei lavori');
+        setLoading(false);
+      });
+  }, []);
 
+ if (loading) return <p className="text-center mt-5">Caricamento...</p>;
+  if (error) return <p className="text-center text-danger mt-5">{error}</p>;
 
-//esempio  utente loggato
-  const user = {
-    role: "user", // "candidate" oppure "company"
-  };
+  // const heroContent = {
+  //   candidate: {
+  //     title: "Trova il lavoro dei tuoi sogni!",
+  //     subtitle: "Scopri le migliori offerte disponibili per la tua carriera.",
+  //   },
 
-  const jobs = [
-    {
-      id: 1,
-      company_id: 101,
-      title: "Frontend Developer",
-      description: "Cerchiamo uno sviluppatore React motivato.",
-      contract_type: "Full Time",
-      city: "Milano",
-      salary: "30000€",
-    },
+  //   company: {
+  //     title: "Scopri i migliori talenti!",
+  //     subtitle: "Pubblica offerte e seleziona i candidati ideali per la tua azienda.",
+  //   },
+  // };
 
-    {
-      id: 2,
-      company_id: 102,
-      title: "Backend Developer",
-      description: "Esperienza con Node.js e PostgreSQL.",
-      contract_type: "Part Time",
-      city: "Roma",
-      salary: "28000€",
-    },
-
-    {
-      id: 3,
-      company_id: 103,
-      title: "UI/UX Designer",
-      description: "Esperienza con Figma richiesta.",
-      contract_type: "Hybrid",
-      city: "Torino",
-      salary: "32000€",
-    },
-  ];
-
-
-  const heroContent = {
-    candidate: {
-      title: "Trova il lavoro dei tuoi sogni!",
-      subtitle: "Scopri le migliori offerte disponibili per la tua carriera.",
-    },
-
-    company: {
-      title: "Scopri i migliori talenti!",
-      subtitle: "Pubblica offerte e seleziona i candidati ideali per la tua azienda.",
-    },
-  };
-
-  const currentHero =
-    user.role === "company"
-      ? heroContent.company
-      : heroContent.candidate;
+  // const currentHero =
+  //   user.role === "company"
+  //     ? heroContent.company
+  //     : heroContent.candidate;
 
 
 

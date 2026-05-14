@@ -1,5 +1,5 @@
-import { useParams, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import ModalDelete from '../components/ModalDelete';
 import ModalCandidate from '../components/ModalCandidate';
 import { SiGooglemaps } from "react-icons/si";
@@ -7,6 +7,8 @@ import { MdOutlineEuro } from "react-icons/md";
 import { MdWorkHistory } from "react-icons/md";
 import { GrNotes } from "react-icons/gr";
 import { AiFillStar } from "react-icons/ai";
+import { useAuth } from '../context/AuthContext';
+
 
 
 function JobDetailsPage() {
@@ -15,88 +17,50 @@ function JobDetailsPage() {
 
     const { id } = useParams()
     const location = useLocation()
+const navigate = useNavigate();
+ const { user } = useAuth();
+
     let job = location.state
-    const user = { role: 'user' }
-    const [users, setUsers] = useState([])
-    const [showModal, setShowModal] = useState(false);
-    const handleConfirm = () => { onDelete(id); setShowModal(false); };
+
+   
+    const [showModal, setShowModal] = useState(false)
+
+    // const handleConfirm = () => { onDelete(id); setShowModal(false); };
     const [showCandidateModal, setShowCandidateModal] = useState(false);
     const [coverLetter, setCoverLetter] = useState('');
     const [cvFile, setCvFile] = useState(null);
     const [error, setError] = useState([]);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
+
+     const requireAuth = (callback) => {
+        if (!user) {
+            navigate('/login', { state: { message: 'Accedi o registrati per continuare' } })
+            return
+        }
+        callback()
+    }
+
     const handleCandidateSubmit = () => {
         let errorText = null;
         let errorFile = null;
+setError([]);
 
-        setError([]);
-        if (!coverLetter.trim()) {
-            errorText = 'Devi inserire una lettera di presentazione';
-        }
-        if (!cvFile) {
-            errorFile = 'Non è stato inserito nessun file allegato';
-        }
-        if (errorText || errorFile) {
-            let errors = []
-            errors.push(errorText)
-            errors.push(errorFile)
-            return setError(errors)
-        }
+        if (!coverLetter.trim()) errorText = 'Devi inserire una lettera di presentazione'
+        if (!cvFile) errorFile = 'Non è stato inserito nessun file allegato'
+ if (errorText || errorFile) { return setError([errorText, errorFile]) }
 
-        console.log({
-            jobId: job.id,
-            coverLetter,
-            cvFile
-        });
 
         setShowCandidateModal(false);
-
-       
         setCoverLetter('');
         setCvFile(null);
-
-      
         setShowSuccessModal(true);
-
-     
-        setTimeout(() => {
-            setShowSuccessModal(false);
-        }, 3000);
-
-
-
+        setTimeout(() => setShowSuccessModal(false), 3000) 
         const toastEl = document.getElementById('candidateToast');
         const toast = new window.bootstrap.Toast(toastEl);
         toast.show();
-
-        setShowCandidateModal(false);
-
-        setCoverLetter('');
-        setCvFile(null);
-
-
-        setShowSuccessModal(true);
-
-
-        setTimeout(() => {
-            setShowSuccessModal(false);
-        }, 2500);
-
     };
 
-//     useEffect(() => {
-//     const fetchJobs = async () => {
-//         try {
-//             const response = await axios.get(
-//                 'http://localhost:3000/jobs'
-//             );
-//             setJobs(response.data);
-//         } catch (error) {
-//         }
-//     };
-//     fetchJobs();
-// }, []);
 
 const handleShare = async () => {
 
@@ -107,18 +71,10 @@ const handleShare = async () => {
             text: `Guarda questa offerta di lavoro: ${job.title}`,
             url: window.location.href
         });
-
     } catch (error) {
-
         console.log('Condivisione annullata');
-
     }
-};
-
-    if (!job) {
-        job = jobs.find(j => j.id === Number(id));
-    }
-
+}
     if (!job) {
         return (
             <>
