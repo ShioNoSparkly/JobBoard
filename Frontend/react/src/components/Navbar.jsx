@@ -15,8 +15,9 @@ function Navbar() {
   const location = useLocation();
   const isDashboard = location.pathname === "/company" || location.pathname === "/user";
   const isHome = location.pathname === "/";
+  const isAuthPage = location.pathname === "/login" || location.pathname === "/register";
   const [searchParams] = useSearchParams();
-const [searchQuery, setSearchQuery] = useState(searchParams.get('search') ?? "");
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') ?? "");
 
 
 
@@ -25,20 +26,20 @@ const [searchQuery, setSearchQuery] = useState(searchParams.get('search') ?? "")
     navigate("/");
   };
 
-   const handleSearch = (e) => {
-    e.preventDefault(); 
-   if (searchQuery.trim()) {
-    navigate(`/?search=${encodeURIComponent(searchQuery.trim())}`);
-  } else {
-    navigate('/');
-  }
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/?search=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      navigate('/');
+    }
   };
 
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-          <NavLink className="navbar-brand" to="/">
+          <NavLink className="navbar-brand logoNavbar" to="/">
             <img src={logo} alt="Logo Jobboard" style={{ width: "200px" }} />
           </NavLink>
           <button
@@ -66,7 +67,7 @@ const [searchQuery, setSearchQuery] = useState(searchParams.get('search') ?? "")
                 </NavLink>
 
               </li>
-              {isHome && (
+              {isHome && !isAuthPage && (
                 <li className="nav-item dropdown d-flex">
                   <NavLink
                     className="nav-link dropdown-toggle fs-4"
@@ -88,36 +89,37 @@ const [searchQuery, setSearchQuery] = useState(searchParams.get('search') ?? "")
                 </li>
               )}
             </ul>
-
-            <form
-              className="d-flex ms-lg-auto mt-2 mt-lg-0 mb-2 gap-1"
-              role="search" onSubmit={handleSearch}
-            >
-              <input
-                className="form-control form-control-sm me-2 w-75 fs-5"
-                type="search"
-                placeholder="Cerca"
-                aria-label="Search"
-                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <button
-                className="btn btn-outline-primary me-2 d-flex align-items-center justify-content-center"
-                type="submit"
+            {!isAuthPage && (
+              <form
+                className="d-flex ms-lg-auto mt-2 mt-lg-0 mb-2 gap-1"
+                role="search" onSubmit={handleSearch}
               >
-                <FaSearch className="fs-5" />
-              </button>
-
-              {user ? (
-                <button className="btn btn-outline-danger fs-5" onClick={handleLogout}>
-                  Esci
+                <input
+                  className="form-control form-control-sm me-2 w-75 fs-5"
+                  type="search"
+                  placeholder="Cerca"
+                  aria-label="Search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button
+                  className="btn btn-outline-primary me-2 d-flex align-items-center justify-content-center"
+                  type="submit"
+                >
+                  <FaSearch className="fs-5" />
                 </button>
-              ) : (
-                <NavLink to="/login" className="btn btn-outline-primary fs-5">
-                  Accedi
-                </NavLink>
-              )}
-            </form>
+
+                {user ? (
+                  <button className="btn btn-outline-danger fs-5" onClick={handleLogout}>
+                    Esci
+                  </button>
+                ) : (
+                  <NavLink to="/login" className="btn btn-outline-primary fs-5">
+                    Accedi
+                  </NavLink>
+                )}
+              </form>
+            )}
           </div>
         </div>
       </nav>

@@ -23,8 +23,12 @@ function Loginpage() {
 
       try {
          const { token, user } = await authAPI.login(email, password);
-         login(user,token); 
-         navigate('/', { replace: true });
+         login(user, token);
+
+         if (user.role === "azienda") {
+            navigate("/company", { replace: true })
+         } else { navigate("/", { replace: true }) }
+
       } catch (err) {
          setError(err.message)
       } finally {
@@ -67,10 +71,10 @@ function Loginpage() {
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="Inserisci password" />
                               </div>
-                              {error &&(<div className="text-danger text-center mb-2">
-                                    <small>{error}</small></div>
-                                    )}
-                               <button
+                              {error && (<div className="text-danger text-center mb-2">
+                                 <small>{error}</small></div>
+                              )}
+                              <button
                                  className="btn btn-primary mt-4 px-4 text-nowrap"
                                  type="submit"
                                  disabled={caricamento}>

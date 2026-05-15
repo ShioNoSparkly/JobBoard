@@ -80,7 +80,7 @@ function JobDetailsPage() {
                 url: window.location.href
             });
         } catch (error) {
-            console.log('Condivisione annullata');
+        
         }
     }
     if (!job) {

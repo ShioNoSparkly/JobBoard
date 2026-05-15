@@ -24,6 +24,8 @@ const CompanyPage = () => {
     const [jobs, setJobs] = useState([]);
     const [candidates, setCandidates] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [jobToEdit, setJobToEdit] = useState(null);
 
     useEffect(() => {
         const fetchApplications = async () => {
@@ -41,8 +43,14 @@ const CompanyPage = () => {
                 const results = await Promise.all(
                     jobs.map(job =>
                         applicationAPI.getApplicationsByJob(job.id)
-                            .then(apps => apps.map(app => ({ ...app, job_title: job.title })))
-                            .catch(() => []) // se un job non ha candidature, non blocca tutto
+                           .then(apps => {
+                const list = Array.isArray(apps) ? apps : [];
+                return list.map(app => ({ ...app, job_title: job.title }));
+            })
+            .catch((err) => {
+
+                return [];
+            })
                     )
                 );
 
@@ -64,6 +72,7 @@ const CompanyPage = () => {
     const [selectedCandidate, setSelectedCandidate] = useState(null);
 
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [showEditSuccessModal, setShowEditSuccessModal] = useState(false);
 
     const [showForm, setShowForm] = useState(false);
 
@@ -76,10 +85,10 @@ const CompanyPage = () => {
     });
 
     const handleStatusChange = (applicationId, newStatus) => {
-    setCandidates(prev =>
-        prev.map(c => c.id === applicationId ? { ...c, status: newStatus } : c)
-    );
-};
+        setCandidates(prev =>
+            prev.map(c => c.id === applicationId ? { ...c, status: newStatus } : c)
+        );
+    };
 
     const handleShow = (candidate) => {
         setSelectedCandidate(candidate);
@@ -119,7 +128,7 @@ const CompanyPage = () => {
 
         try {
             const createdJob = await jobsAPI.createJob(newJob);
-          setJobs(prev => [...prev, createdJob]);
+            setJobs(prev => [...prev, createdJob]);
 
             // Reset form
             setNewJob({
@@ -136,6 +145,40 @@ const CompanyPage = () => {
 
         } catch (err) {
             setError(err.message || 'Errore durante la pubblicazione');
+        }
+    };
+
+    const handleDelete = async (jobId) => {
+        try {
+            await jobsAPI.deleteJob(jobId);
+            setJobs(prev => prev.filter(j => j.id !== jobId));
+        } catch (err) {
+            console.error("Errore eliminazione:", err.message);
+        }
+    };
+
+
+    const handleEdit = (job) => {
+        setJobToEdit({ ...job });
+        setShowEditModal(true);
+    };
+
+
+    const handleSaveEdit = async () => {
+        try {
+            const updated = await jobsAPI.updateJob(jobToEdit.id, jobToEdit);
+            setJobs(prev => prev.map(j => j.id === updated.id ? updated : j));
+            setShowEditModal(false);
+            setShowEditSuccessModal(true);
+
+            // chiude automaticamente dopo 3 sec
+            setTimeout(() => {
+                setShowEditSuccessModal(false);
+            }, 3000);
+
+
+        } catch (err) {
+            console.error("Errore modifica:", err.message);
         }
     };
 
@@ -224,8 +267,8 @@ const CompanyPage = () => {
                                             }
                                         >
                                             <option value=''>Tutti gli stati</option>
-                                            <option value='inviata'>Inviata</option>
-                                            <option value='accettata'>Accettata</option>
+                                             <option value='inviata'>In Revisione</option>
+                                            <option value='accettata'>Accettata</option>      
                                             <option value='rifiutata'>Rifiutata</option>
                                         </Form.Select>
 
@@ -313,7 +356,7 @@ const CompanyPage = () => {
                                         <td>{new Date(c.created_at).toLocaleDateString('it-IT')}</td>
                                         <td>
                                             <Badge bg={c.status === 'rifiutata' ? 'danger' : c.status === 'inviata' ? 'warning' : 'success'}>
-                                                {c.status}
+                                                {c.status === 'inviata' ? 'In Revisione' : c.status}
                                             </Badge>
                                         </td>
                                         <td className="text-end">
@@ -352,6 +395,9 @@ const CompanyPage = () => {
                                 name={job.company_name}
                                 job={job}
                                 style={{ animationDelay: `${index * 0.08}s` }}
+                                isOwner={true}
+                                onDelete={handleDelete}
+                                onEdit={handleEdit}
 
                             />
                         ))
@@ -361,8 +407,8 @@ const CompanyPage = () => {
                         </p>
                     )}
                 </div>
-                <CompAzienda/>
-                {/* MODAL CREA ANNUNCIO */}
+                <CompAzienda />
+
                 <Modal
                     show={showForm}
                     onHide={() => {
@@ -449,7 +495,7 @@ const CompanyPage = () => {
                     </Modal.Footer>
                 </Modal>
 
-                {/* MODALE CANDIDATO */}
+
                 <DettaglioCandidato
                     show={showModal}
                     handleClose={handleClose}
@@ -479,6 +525,96 @@ const CompanyPage = () => {
                             onClick={() => setShowSuccessModal(false)}
                         >
                             Chiudi
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+                {/* MODALE SUCCESSO MODIFICA */}
+                <Modal
+                    show={showEditSuccessModal}
+                    onHide={() => setShowEditSuccessModal(false)}
+                    centered
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>
+                            Operazione completata
+                        </Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        Il tuo annuncio è stato modificato correttamente.
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button
+                            variant="primary"
+                            onClick={() => setShowEditSuccessModal(false)}
+                        >
+                            Chiudi
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal
+                    show={showEditModal}
+                    onHide={() => setShowEditModal(false)}
+                    centered
+                    size="lg"
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Modifica annuncio</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        {jobToEdit && (
+                            <Row className="g-3">
+                                <Col md={6}>
+                                    <Form.Control
+                                        placeholder="Titolo"
+                                        value={jobToEdit.title}
+                                        onChange={(e) => setJobToEdit({ ...jobToEdit, title: e.target.value })}
+                                    />
+                                </Col>
+                                <Col md={6}>
+                                    <Form.Control
+                                        placeholder="Città"
+                                        value={jobToEdit.city}
+                                        onChange={(e) => setJobToEdit({ ...jobToEdit, city: e.target.value })}
+                                    />
+                                </Col>
+                                <Col md={6}>
+                                    <Form.Control
+                                        placeholder="Stipendio"
+                                        value={jobToEdit.salary}
+                                        onChange={(e) => setJobToEdit({ ...jobToEdit, salary: e.target.value })}
+                                    />
+                                </Col>
+                                <Col md={6}>
+                                    <Form.Control
+                                        placeholder="Tipo contratto"
+                                        value={jobToEdit.contract_type}
+                                        onChange={(e) => setJobToEdit({ ...jobToEdit, contract_type: e.target.value })}
+                                    />
+                                </Col>
+                                <Col md={12}>
+                                    <Form.Control
+                                        as="textarea"
+                                        rows={5}
+                                        placeholder="Descrizione..."
+                                        value={jobToEdit.description}
+                                        onChange={(e) => setJobToEdit({ ...jobToEdit, description: e.target.value })}
+                                    />
+                                </Col>
+                            </Row>
+                        )}
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+                            Annulla
+                        </Button>
+                        <Button variant="primary" onClick={handleSaveEdit}>
+                            Salva modifiche
                         </Button>
                     </Modal.Footer>
                 </Modal>

@@ -43,10 +43,10 @@ function RegisterPage() {
 
   return (
     <>
-      <div className="bg-img-full d-flex align-items-center justify-content-center">
+      <div className="bg-img-full d-flex align-items-center justify-content-center min-vh-100 py-5">
         <div className="container">
           <div className="row justify-content-center">
-            <div className="col-md-10 col-lg-8">
+            <div className="col-md-10 col-lg-8 px-4 px-md-0">
               <div className="card shadow border-0 rounded-4">
                 <div className="card-body p-5 py-md-6 shadow-lg">
                   <h2 className="fw-bold mb-4 text-center">Registrati</h2>
