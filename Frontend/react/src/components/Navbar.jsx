@@ -4,7 +4,7 @@ import { AiFillStar } from "react-icons/ai";
 import logo from "../assets/logo.webp";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 
 
@@ -15,12 +15,23 @@ function Navbar() {
   const location = useLocation();
   const isDashboard = location.pathname === "/company" || location.pathname === "/user";
   const isHome = location.pathname === "/";
+  const [searchParams] = useSearchParams();
+const [searchQuery, setSearchQuery] = useState(searchParams.get('search') ?? "");
 
 
 
   const handleLogout = () => {
     logout();
     navigate("/");
+  };
+
+   const handleSearch = (e) => {
+    e.preventDefault(); 
+   if (searchQuery.trim()) {
+    navigate(`/?search=${encodeURIComponent(searchQuery.trim())}`);
+  } else {
+    navigate('/');
+  }
   };
 
   return (
@@ -80,13 +91,15 @@ function Navbar() {
 
             <form
               className="d-flex ms-lg-auto mt-2 mt-lg-0 mb-2 gap-1"
-              role="search"
+              role="search" onSubmit={handleSearch}
             >
               <input
                 className="form-control form-control-sm me-2 w-75 fs-5"
                 type="search"
                 placeholder="Cerca"
                 aria-label="Search"
+                 value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
               <button
                 className="btn btn-outline-primary me-2 d-flex align-items-center justify-content-center"

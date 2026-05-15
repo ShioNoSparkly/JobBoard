@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import ImgUtente from "../assets/img-utente.webp";
 
-function CompUtente() {
+function ComponenteDettaglio() {
   return (
     <>
       <div className="container col-xxl-7 px-4 py-2 w-100">
@@ -12,18 +12,18 @@ function CompUtente() {
           <div className="col-lg-7 offset-lg-1 text-start">
            
             <p className="fs-1 fw-bold text-dark lh-base mb-3">
-              Esplora posizioni su misura per il tuo profilo
+             Il lavoro dei tuoi sogni ti sta aspettando
             </p>
             <p className="text-dark fs-5 mb-5">
-              Trova le aziende che cercano proprio il tuo talento. La nostra
-              missione è connetterti con realtà che valorizzino la tua
-              trasparenza e competenza.
+            Ogni giorno nuove aziende pubblicano offerte di lavoro su JobBoard. 
+      Che tu sia alla ricerca del tuo primo impiego o pronto per una nuova sfida, 
+      qui trovi opportunità in tutta Italia — dal Nord al Sud, in ogni settore.
             </p>
           </div>
           <div className="col-lg-4">
           
             <img
-              src={ImgUtente}
+              src="https://thumbs.dreamstime.com/b/recruitment-hiring-career-job-emplyment-concept-73027720.jpg"
               className="d-block mx-lg-auto img-fluid"
               alt="Bootstrap Themes"
               width="700"
@@ -37,4 +37,4 @@ function CompUtente() {
   );
 }
 
-export default CompUtente;
+export default ComponenteDettaglio;

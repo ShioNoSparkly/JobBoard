@@ -143,12 +143,7 @@ function RegisterPage() {
                         )}
                       </div>
                     </div>
-                    <button
-                      className="btn btn-primary btn-lg w-50 mt-3"
-                      type="submit"
-                    >
-                      Registrati
-                    </button>
+                   <button className="btn btn-primary btn-lg px-5 mt-3 text-nowrap" type="submit">Registrati</button>
                     <p className='mt-3'>Hai già un account?
                       <NavLink to='/login' className='text-decoration-none fw-semibold mx-2'>Accedi</NavLink></p>
                   </form>
