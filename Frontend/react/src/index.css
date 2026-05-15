@@ -14,6 +14,10 @@ body {
   box-sizing: border-box;
 }
 
+.logoNavbar {
+  margin-left: -3rem;
+}
+
 .bg-img-full {
   min-height: 80vh;
   width: 100%;

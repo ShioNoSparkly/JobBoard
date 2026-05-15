@@ -69,7 +69,7 @@ const getApplicationsByJob = async (jobId, companyId) => {
     const job = await JobService.getJobById(jobId);
 
     // Verifichiamo prima che l'annuncio appartenga all'azienda
-    if (job.company_id !== companyId) {
+    if (Number(job.company_id) !== Number(companyId)) {
         const err = new Error("Non autorizzato o annuncio non trovato");
         err.statusCode = 403;
         throw err;
