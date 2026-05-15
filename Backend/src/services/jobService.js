@@ -19,6 +19,11 @@ const getJobById = async (id) => {
     return job;
 };
 
+const getCities = async () => {
+    const result = await Job.findByCities();
+    return result.rows.map(r => r.city)
+}
+ 
 const getJobsPerCompany = async (companyId) => {
 
     const result = await Job.findCompanyProfile(companyId);
@@ -82,5 +87,6 @@ module.exports = {
     getJobsPerCompany,
     getAllJobs,
     deleteJob,
-    updateJob
+    updateJob,
+    getCities
 };

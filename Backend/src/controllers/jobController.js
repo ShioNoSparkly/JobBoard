@@ -73,6 +73,14 @@ const getAllJobs = async (req, res) => {
     }
 };
 
+const getCities = async( req, res, next ) => {
+    try {
+        const cities = await jobService.getCities();
+        res.json({dati: cities})
+    } catch (err) {
+        next(err)
+    }
+}
 
 // Recupera tutti gli annunci per Azienda
 const getCompanyJobs = async (req, res) => {
@@ -159,5 +167,6 @@ module.exports = {
     getAllJobs,
     getCompanyJobs,
     deleteJob,
-    updateJob
+    updateJob,
+    getCities
 };

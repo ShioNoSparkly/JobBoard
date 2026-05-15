@@ -112,6 +112,7 @@ export const jobsAPI = {
   createJob: (dati) => request("POST", "/jobs", dati),
   updateJob: (id, dati) => request("PUT", `/jobs/${id}`, dati),
   deleteJob: (id) => request("DELETE", `/jobs/${id}`),
+  getCities: () => request("GET", "/jobs/cities")
 };
 
 // ── application ──────────────────────────────────────────────────

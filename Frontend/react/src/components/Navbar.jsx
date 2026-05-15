@@ -1,10 +1,10 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
-import { AiFillStar } from "react-icons/ai";
 import logo from "../assets/logo.webp";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { jobsAPI } from "../services/api";
 
 
 
@@ -18,8 +18,14 @@ function Navbar() {
   const isAuthPage = location.pathname === "/login" || location.pathname === "/register";
   const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') ?? "");
+  const [cities, setCities] = useState([]);
 
-
+  useEffect( () => {
+    jobsAPI.getCities()
+      .then(setCities)
+      .catch( () => {})
+  }, []);
+  
 
   const handleLogout = () => {
     logout();
@@ -34,6 +40,7 @@ function Navbar() {
       navigate('/');
     }
   };
+
 
   return (
     <>
@@ -78,13 +85,9 @@ function Navbar() {
                   > Città
                   </NavLink>
                   <ul className="dropdown-menu shadow border-0 text-center w-75 mx-auto w-lg-auto mb-2 fs-5">
-                    {["Milano", "Torino", "Roma", "Napoli", "Palermo"].map((city) => (
-                      <li key={city}>
-                        <NavLink className="dropdown-item" to={`/?city=${city}`}>
-                          {city}
-                        </NavLink>
-                      </li>
-                    ))}
+                    {cities.map((city) => (<li key={city}>
+                      <NavLink className="dropdown-item" to={`/?city=${city}`}>{city}</NavLink>
+                    </li>))}
                   </ul>
                 </li>
               )}

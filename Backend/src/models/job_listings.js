@@ -71,6 +71,10 @@ const findAll = () =>
 //    [city, contract_type],
 //  );
 
+const findByCities = () => {
+  return pool.query(`SELECT DISTINCT city FROM job_listings WHERE city IS NOT NULL AND city <> '' ORDER BY city ASC`)
+};
+
 const findByFilters = ({ city = null, contract_type = null, search = null }) => {
   return pool.query(
     `SELECT
@@ -182,6 +186,7 @@ module.exports = {
   findAll,
   findByFilters,
   findByKeyword,
+  findByCities,
   //saveToFavorites,
   findCompanyProfile,
   update,

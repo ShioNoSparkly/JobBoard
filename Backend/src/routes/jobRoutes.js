@@ -49,6 +49,8 @@ router.get("/",
     jobController.getAllJobs
 );
 
+router.get("/cities", jobController.getCities)
+
 // POST /api/jobs — Creazione singolo annuncio
 router.post("/",
     autenticato,
