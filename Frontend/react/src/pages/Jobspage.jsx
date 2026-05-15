@@ -20,10 +20,19 @@ function Jobspage() {
   const selectedCity = searchParams.get('city')
   const searchQuery = searchParams.get('search');
 
+  const [currentPage, setCurrentPage] = useState(1);
+const jobsPerPage = 3;
+
+
+const totalPages = Math.ceil(jobs.length / jobsPerPage);
+const indexUltimo = currentPage * jobsPerPage;
+const indexPrimo = indexUltimo - jobsPerPage;
+const jobsPaginati = jobs.slice(indexPrimo, indexUltimo);
+
 
   useEffect(() => {
     setLoading(true);
-
+    setCurrentPage(1);
   const filters = {};
   if (selectedCity) filters.city = selectedCity;
   if (searchQuery)  filters.search = searchQuery;
@@ -68,24 +77,65 @@ function Jobspage() {
           )}
           
          <div className="row g-4">
-           {jobs.length > 0 ? (
-              jobs.map((job, index) => (
-                <JobCard
-                  key={job.id}
-                  job={job}
-                  style={{ animationDelay: `${index * 0.08}s` }}
-                />
-              ))
-            ) : (
-              <p className="text-center text-muted">
-                {selectedCity
-                  ? `Nessun annuncio disponibile a ${selectedCity}.`
-                  : searchQuery
+    {jobsPaginati.length > 0 ? (
+        jobsPaginati.map((job, index) => (
+            <JobCard
+                key={job.id}
+                job={job}
+                style={{ animationDelay: `${index * 0.08}s` }}
+            />
+        ))
+    ) : (
+        <p className="text-center text-muted">
+            {selectedCity
+                ? `Nessun annuncio disponibile a ${selectedCity}.`
+                : searchQuery
                     ? `Nessun risultato per "${searchQuery}".`
                     : 'Nessun annuncio disponibile.'}
-              </p>
-            )}
-          </div>
+        </p>
+    )}
+</div>
+
+{/* PAGINAZIONE */}
+{totalPages > 1 && (
+    <nav className="mt-5 d-flex justify-content-center">
+        <ul className="pagination">
+
+            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                <button
+                    className="page-link"
+                    onClick={() => setCurrentPage(p => p - 1)}
+                >
+                    &laquo;
+                </button>
+            </li>
+
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                <li
+                    key={page}
+                    className={`page-item ${currentPage === page ? 'active' : ''}`}
+                >
+                    <button
+                        className="page-link"
+                        onClick={() => setCurrentPage(page)}
+                    >
+                        {page}
+                    </button>
+                </li>
+            ))}
+
+            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                <button
+                    className="page-link"
+                    onClick={() => setCurrentPage(p => p + 1)}
+                >
+                    &raquo;
+                </button>
+            </li>
+
+        </ul>
+    </nav>
+)}
         </div>
       </section>
       <Aziende/>

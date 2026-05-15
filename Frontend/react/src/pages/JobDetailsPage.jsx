@@ -9,7 +9,8 @@ import { GrNotes } from "react-icons/gr";
 import { AiFillStar } from "react-icons/ai";
 import { useAuth } from '../context/AuthContext';
 import { applicationAPI } from '../services/api';
-
+import ComponenteDettaglio from '../components/ComponenteDettaglio';
+import { BsFillInfoCircleFill } from "react-icons/bs";
 
 function JobDetailsPage() {
     const { id } = useParams()
@@ -96,13 +97,13 @@ function JobDetailsPage() {
     if (!user) {
         return (
 
-           
-                <section className="hero-section d-flex align-items-center py-5 bg-img-2">
-                     <div className= "overlay z-0"></div>
-                    <div className="container py-5 text-center text-dark rounded-4 bg-img-2">
-                        <h4 className='fw-semibold fs-1 mt-3 '>Registrati o accedi per vedere i dettagli dell'annuncio!</h4>
-                    </div>
-                </section>
+
+            <section className="hero-section d-flex align-items-center py-5 bg-img-2">
+                <div className="overlay z-0"></div>
+                <div className="container py-5 text-center text-dark rounded-4 bg-img-2">
+                    <h4 className='fw-semibold fs-1 mt-3 '>Registrati o accedi per vedere i dettagli dell'annuncio!</h4>
+                </div>
+            </section>
 
 
 
@@ -139,7 +140,7 @@ function JobDetailsPage() {
                                 </div>
                             )}
 
-                            {user.role !== 'company' && (
+                            {user.role !== 'azienda' && (
                                 <>
                                     <button className="btn btn-primary w-100 mb-2"
                                         onClick={() => setShowCandidateModal(true)}>
@@ -155,19 +156,29 @@ function JobDetailsPage() {
                                         setCvFile={setCvFile}
                                         error={error}
                                         setError={setError} />
-                                </>
-                            )}
+                               
+                            
 
                             <button className="btn btn-outline-dark w-100"
                                 onClick={handleShare}>Condividi
                             </button>
                             <hr />
-
+                             </>
+)}
                             <small className="text-muted">
                                 Pubblicato recentemente • 10 candidati
                             </small>
-                            <div>
-                                <img src="" alt="" />
+                            <div className='mt-3 overflow-hidden rounded'>
+                                <img src="https://www.altamirahrm.com/wp-content/uploads/2017/03/job-board-di-settore-800x506.jpg" alt="img"
+                                    className="img-fluid w-100 h-100 object-fit-cover" />
+                            </div>
+
+                            <div className="mt-3 p-3 border rounded bg-light small text-muted fw-semibold">
+                           <div> <BsFillInfoCircleFill className='text-primary mb-3 fs-4'/></div>    
+                                Connect Work è la tua piattaforma per entrare in contatto con nuove opportunità professionali in modo semplice e immediato.
+                                La nostra Job Board mette in relazione candidati e aziende, facilitando il processo di selezione e candidatura.
+                                Ogni giorno nuove offerte vengono pubblicate per aiutarti a trovare il percorso lavorativo più adatto alle tue competenze e ai tuoi obiettivi.
+                                Siamo al tuo fianco per rendere la ricerca del lavoro più chiara, veloce e accessibile.
                             </div>
                         </div>
                     </div>
@@ -195,10 +206,7 @@ function JobDetailsPage() {
             )}
 
 
-
-
-
-
+            <ComponenteDettaglio />
 
         </>
     )

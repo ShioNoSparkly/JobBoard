@@ -5,7 +5,7 @@ import ModalDelete from './ModalDelete';
 import { useAuth } from '../context/AuthContext';
 import { FcApproval } from "react-icons/fc";
 
-function JobCard({ job, style }) {
+function JobCard({ job, style}) {
   const { user } = useAuth();
   const navigate = useNavigate();
 const [showModal, setShowModal] = useState(false);
@@ -26,7 +26,9 @@ const handleConfirm = () => {
           <FcApproval className="fs-1 mx-auto"/>
           <h4 className="fw-bold mb-3">{job.title}</h4>
 
-          <small className="text-muted mb-2"> Company ID: {job.company_id} </small>
+         <small className="text-muted mb-2">
+   <span className="fs-6 fw-bold text-muted">{job.company_name}</span> 
+</small>
 
           <div className="mb-3">
             <span className="badge bg-dark me-2">

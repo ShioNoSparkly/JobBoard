@@ -39,21 +39,7 @@ function ModalCandidate({
                                 placeholder="Scrivi la tua presentazione..." />
 
                                 {(error && <small className='text-danger'>{error[0]}</small>)}
-                        </div>
-
-
-                        {/* <div className="mb-3">
-                            <label className="form-label">
-                                Carica CV
-                            </label>
-                            <input
-                                type="file"
-                                className="form-control"
-                                onChange={(e) =>
-                                    setCvFile(e.target.files[0])} />
-                                    {(error && <small className='text-danger'>{error[1]}</small>)}
-                        </div> */}
-                          
+                        </div>                          
                     </div>
 
                     <div className="modal-footer">

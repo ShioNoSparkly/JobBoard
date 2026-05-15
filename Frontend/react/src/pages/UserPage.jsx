@@ -41,7 +41,7 @@ function UserPage() {
   return (
 
     <>
-      <div className='w-50 justify-content-center mx-auto text-center shadow-sm bg-black rounded-4  '>
+      <div className='w-75 w-md-50 justify-content-center mx-auto text-center shadow-sm bg-black rounded-4'>
         <h1 className="display-4 fw-semibold text-info  mb-3 mt-3 p-3">Workspace Utente</h1>
       </div>
 

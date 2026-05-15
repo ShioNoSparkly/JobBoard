@@ -11,15 +11,14 @@ function Loginpage() {
 
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
-   const [error, setError] = useState([]);
+   const [error, setError] = useState();
    const [success, setSuccess] = useState(false);
-   const [successMessage, setSuccessMessage] = useState("");
    const [caricamento, setCaricamento] = useState(false)
 
    async function handleSubmit(e) {
       e.preventDefault();
       setCaricamento(true);
-      setError([])
+      setError("");
 
 
       try {
@@ -32,42 +31,6 @@ function Loginpage() {
          setCaricamento(false)
       }
    }
-
-
-
-
-
-
-
-
-
-
-   //        try {
-   //       const BASE = 'http://localhost:3000';
-   //       const res = await fetch(`${BASE}/api/auth/login`, {
-   //         method: 'POST',
-   //         headers: {'Content-Type' : 'application/json'},
-   //         body: JSON.stringify({email, password})
-   //     }) 
-
-   //     const data = await res.json();
-
-   //     if(!res.ok){
-   //   throw new Error(data.errore || 'Errore login')
-   //     }
-   // login(data.user, data.token);
-
-   //       setSuccess(true);
-   //       setSuccessMessage("Login avvenuto con successo!") 
-   //       navigate('/jobs');
-
-
-   //     } catch (error) {
-   //       setError({ email: error.message });
-   //     }
-
-
-   //    }
 
    return (
       <>
@@ -91,7 +54,6 @@ function Loginpage() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="Inserisci email" />
-                                 {(error && <small className='text-danger mt-2'>{error[0]}</small>)}
                               </div>
 
                               <div className="mb-3 d-flex row justify-content-center">
@@ -104,12 +66,15 @@ function Loginpage() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="Inserisci password" />
-                                 {(error && <small className='text-danger mt-2'>{error[1]}</small>)}
                               </div>
-                              <button
-                                 className="btn btn-primary mt-4 w-25"
-                                 type="submit">
-                                 Accedi
+                              {error &&(<div className="text-danger text-center mb-2">
+                                    <small>{error}</small></div>
+                                    )}
+                               <button
+                                 className="btn btn-primary mt-4 px-4 text-nowrap"
+                                 type="submit"
+                                 disabled={caricamento}>
+                                 {caricamento ? 'Accesso...' : 'Accedi'}
                               </button>
                               <p className='mt-3'>Non hai un account?
                                  <NavLink to='/register' className='text-decoration-none fw-semibold mx-2'>Registrati</NavLink></p>

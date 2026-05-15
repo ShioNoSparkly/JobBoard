@@ -85,7 +85,7 @@ export const authAPI = {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data.errore || data.message || 'Errore login');
+      throw new Error(data.error || data.message || 'Errore login');
     }
 
     // Salva il token nel localStorage (come fa getToken())
@@ -108,6 +108,7 @@ export const jobsAPI = {
     const query = params.toString() ? `?${params.toString()}` : '';
     return request("GET", `/jobs${query}`);
   },
+  getCompanyJobs: () => request("GET", "/jobs/company"),
   createJob: (dati) => request("POST", "/jobs", dati),
   updateJob: (id, dati) => request("PATCH", `/jobs/${id}`, dati),
   deleteJob: (id) => request("DELETE", `/jobs/${id}`),
@@ -117,7 +118,7 @@ export const jobsAPI = {
 export const applicationAPI = {
   apply: (job_id, cover_letter) =>
     request("POST", "/applications/apply", { job_id, cover_letter }),
-  updateStatus: (id) => request("PATCH", `/jobs/${id}/status`),
+  updateStatus: (id, status) => request("PATCH", `/applications/${id}/status`, { status }),
   getApplicationsByJob: (jobId) => request("GET", `/applications/job/${jobId}`),
   getMyApplications: () => request("GET", "/applications/mine"),
 };
