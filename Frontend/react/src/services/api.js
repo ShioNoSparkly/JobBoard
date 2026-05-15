@@ -24,46 +24,29 @@ function getToken() {
   return localStorage.getItem("token");
 }
 
-async function request(method, path, body = null) {
-  const token = getToken();
+// services/api.js
 
-  const options = {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
-    },
-  };
-
-  if (body) options.body = JSON.stringify(body);
-
-  // Gestiamo esplicitamente gli errori di rete (backend spento, no internet)
-  // separandoli dagli errori HTTP (4xx, 5xx)
-  let res;
-  try {
-    res = await fetch(`${BASE_URL}${path}`, options);
-  } catch {
-    // fetch lancia solo per errori di rete, mai per 4xx/5xx
-    throw new Error(
-      "Impossibile contattare il server. Controlla che il backend sia in esecuzione.",
-    );
-  }
-
-  const data = await res.json();
+async function request(method, path, body = null, params = null) {
+    const token = getToken();
 
   // 401 = token scaduto o revocato durante la sessione → logout automatico
   if (res.status === 401) {
     window.dispatchEvent(new Event("auth:unauthorized"));
   }
 
-  if (!res.ok) {
-    const err = new Error(data.errore || "Errore sconosciuto");
-    err.status = res.status;
-    throw err;
-  }
+    // Gestione nativa del body per POST, PUT, PATCH
+    if (body && ["POST", "PUT", "PATCH"].includes(method)) {
+        options.body = JSON.stringify(body);
+    }
 
-  return data.dati;
-}
+    // Costruiamo la Query String per passare i parametri (?city=... o ?search=...)
+    let urlSpecifica = `${BASE_URL}${path}`;
+    if (params) {
+        const querySearch = new URLSearchParams(params).toString();
+        if (querySearch) {
+            urlSpecifica += `?${querySearch}`;
+        }
+    }
 
 // ── Autenticazione ────────────────────────────────────────────
 export const authAPI = {
@@ -113,6 +96,7 @@ export const jobsAPI = {
   updateJob: (id, dati) => request("PATCH", `/jobs/${id}`, dati),
   deleteJob: (id) => request("DELETE", `/jobs/${id}`),
 };
+
 
 // ── application ──────────────────────────────────────────────────
 export const applicationAPI = {
