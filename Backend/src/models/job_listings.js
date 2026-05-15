@@ -54,8 +54,25 @@ const findAll = () =>
   );
 
 //Filtri per città e tipo contratto ·
-const findByFilters = (city, contract_type) =>
-  pool.query(
+//const findByFilters = (city, contract_type) =>
+//  pool.query(
+//    `SELECT
+//       j.*,
+//       u.name                          AS company_name,
+//       u.email                         AS company_email,
+//       COUNT(a.id)                     AS total_applications,
+//       COUNT(CASE WHEN a.status = 'inviata' THEN 1 END) AS pending_applications
+//     FROM job_listings j
+//     JOIN users u ON u.id = j.company_id
+//     LEFT JOIN applications a ON a.job_id = j.id
+//     WHERE j.city = $1 AND j.contract_type = $2
+//     GROUP BY j.id, u.name, u.email
+//     ORDER BY j.created_at DESC`,
+//    [city, contract_type],
+//  );
+
+const findByFilters = ({ city = null, contract_type = null, search = null }) => {
+  return pool.query(
     `SELECT
        j.*,
        u.name                          AS company_name,
@@ -65,11 +82,18 @@ const findByFilters = (city, contract_type) =>
      FROM job_listings j
      JOIN users u ON u.id = j.company_id
      LEFT JOIN applications a ON a.job_id = j.id
-     WHERE j.city = $1 AND j.contract_type = $2
+     WHERE j.city = COALESCE($1, j.city)
+       AND j.contract_type = COALESCE($2, j.contract_type)
+       AND ($3::varchar IS NULL OR j.title ILIKE $3)
      GROUP BY j.id, u.name, u.email
      ORDER BY j.created_at DESC`,
-    [city, contract_type],
+    [
+      city,
+      contract_type,
+      search ? `%${search}%` : null
+    ]
   );
+};
 
 // INICIO EXTRA
 // Ricerca per parola chiave nel titolo ·
