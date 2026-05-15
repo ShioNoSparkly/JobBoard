@@ -5,7 +5,7 @@ import ImgUtente from "../assets/img-utente.webp";
 function CompUtente() {
   return (
     <>
-      <div className="container col-xxl-7 px-4 py-2 w-100">
+      <div className="container col-xxl-7 px-4 py-2 w-100 border-top border-primary">
       
         <div className="row flex-lg-row-reverse align-items-center py-5">
         

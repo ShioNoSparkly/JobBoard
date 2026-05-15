@@ -14,7 +14,7 @@ function Collaborazioni() {
   return (
     <>
       <div className="container px-4 py-5" id="custom-cards">
-        <h2 className="pb-2 border-bottom border-primary-subtle text-dark fw-bold">
+        <h2 className="pb-2 text-dark fw-bold border-top border-primary pt-5 mb-3">
           Le nostre collaborazioni
         </h2>
 

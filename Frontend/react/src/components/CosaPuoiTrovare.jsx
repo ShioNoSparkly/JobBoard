@@ -1,80 +1,73 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import Muratore from "../assets/img-muratore.webp";
+import FrontEnd from "../assets/img-front.webp";
+import BackEnd from "../assets/img-back.webp";
+import DataAnalyst from "../assets/img-data.webp";
 
 function CosaPuoiTrovare() {
-  // Se non hai un'immagine locale, puoi usare un URL o lasciarlo vuoto
   const placeholderImg = "https://via.placeholder.com/600x400";
 
   return (
-    <div className="container my-5">
-      <div className="row justify-content-center">
-        <div className="col-md-4 col-sm-6">
+    <div className="container my-5 border-top border-primary mt-5 pt-5">
+      <h2 className="pb-2 mb-5 text-dark fw-bold">Le tue opportunità</h2>
+      <div className="row justify-content-center gap-xl-5">
+        <div className="col-10 col-md-5 mx-auto mb-4">
           <div className="custom-card-wrapper shadow">
             <img
-              src="INSERISCI_QUI_IL_TUO_URL"
+              src={Muratore}
               className="card-img-bg"
-              alt="Produzione"
+              alt="IL MURATOREEE"
             />
 
 
             <div className="card-overlay-content text-white">
-              <h3 className="text-uppercase fw-light mb-4">produzione</h3>
+              <h3 className="text-uppercase fw-light mb-4 fw-medium">O' Fravecatore</h3>
             </div>
           </div>
         </div>
-        <div className="col-md-4 col-sm-6">
+        <div className="col-10 col-md-5 mx-auto mb-4">
           <div className="custom-card-wrapper shadow">
             <img
-              src="INSERISCI_QUI_IL_TUO_URL"
+              src={FrontEnd}
               className="card-img-bg"
-              alt="Produzione"
+              alt="Frontend"
             />
 
             <div className="card-overlay-content text-white">
-              <h3 className="text-uppercase fw-light mb-4">produzione</h3>
+              <h3 className="text-uppercase fw-light mb-4 fw-medium">Sviluppatore Back-End</h3>
+              
             </div>
           </div>
         </div>
-        <div className="col-md-4 col-sm-6">
+        <div className="col-10 col-md-5 mx-auto mb-4">
           <div className="custom-card-wrapper shadow">
             <img
-              src="INSERISCI_QUI_IL_TUO_URL"
+              src={BackEnd}
               className="card-img-bg"
-              alt="Produzione"
+              alt="Backend"
             />
 
             <div className="card-overlay-content text-white">
-              <h3 className="text-uppercase fw-light mb-4">produzione</h3>
+              <h3 className="text-uppercase fw-light mb-4 fw-medium">Sviluppatore Front-End</h3>
             </div>
           </div>
         </div>
-        <div className="col-md-4 col-sm-6">
+        <div className="col-10 col-md-5 mx-auto mb-4">
 
           <div className="custom-card-wrapper shadow">
             <img
-              src="INSERISCI_QUI_IL_TUO_URL"
+              src={DataAnalyst}
               className="card-img-bg"
-              alt="Produzione"
+              alt="Data Analyst"
             />
 
             <div className="card-overlay-content text-white">
-              <h3 className="text-uppercase fw-light mb-4">produzione</h3>
+              <h3 className="text-uppercase fw-light mb-4 fw-medium">Data Analyst</h3>
             </div>
           </div>
         </div>
-        <div className="col-md-4 col-sm-6">
-          <div className="custom-card-wrapper shadow">
-            <img
-              src="INSERISCI_QUI_IL_TUO_URL"
-              className="card-img-bg"
-              alt="Produzione"
-            />
 
-            <div className="card-overlay-content text-white">
-              <h3 className="text-uppercase fw-light mb-4">produzione</h3>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

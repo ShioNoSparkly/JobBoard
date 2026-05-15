@@ -46,6 +46,12 @@ const Footer = () => {
                 >
                   Termini e Condizioni
                 </NavLink>
+                <NavLink
+                  to="/chi-siamo"
+                  className="nav-link p-0 small fw-bold mb-2 footer-link-custom text-muted"
+                >
+                  Chi siamo
+                </NavLink>
               </li>
             </ul>
           </div>
