@@ -34,8 +34,8 @@ const getAllJobs = async (filters = {}) => {
         return result.rows;
     }
 
-    // Se ci sono filtri di città e contratto, usa i filtri combinati
-    if (city && contract_type) {
+    // Se ci sono filtri di città o contratto, usa i filtri combinati
+    if (city || contract_type) {
         const result = await Job.findByFilters(city, contract_type);
         return result.rows;
     }
