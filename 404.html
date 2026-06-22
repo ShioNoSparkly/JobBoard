@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting</title>
+    <script>
+        // Mantiene il percorso originale per React Router
+        sessionStorage.redirect = location.href;
+        location.href = location.pathname.replace(/\/[^\/]*$/, '/index.html');
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>
