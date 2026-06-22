@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import Muratore from "../assets/img-muratore.webp";
+import AISpecialist from "../assets/img-ai.webp";
 import FrontEnd from "../assets/img-front.webp";
 import BackEnd from "../assets/img-back.webp";
 import DataAnalyst from "../assets/img-data.webp";
@@ -14,39 +14,25 @@ function CosaPuoiTrovare() {
       <div className="row justify-content-center gap-xl-5">
         <div className="col-10 col-md-5 mx-auto mb-4">
           <div className="custom-card-wrapper shadow">
-            <img
-              src={Muratore}
-              className="card-img-bg"
-              alt="IL MURATOREEE"
-            />
-
+            <img src={AISpecialist} className="card-img-bg" alt="AI Automation Specialist" />
 
             <div className="card-overlay-content text-white">
-              <h3 className="text-uppercase fw-light mb-4 fw-medium">O' Fravecatore</h3>
+              <h3 className="text-uppercase fw-light mb-4 fw-medium">AI Automation Specialist</h3>
             </div>
           </div>
         </div>
         <div className="col-10 col-md-5 mx-auto mb-4">
           <div className="custom-card-wrapper shadow">
-            <img
-              src={FrontEnd}
-              className="card-img-bg"
-              alt="Frontend"
-            />
+            <img src={FrontEnd} className="card-img-bg" alt="Frontend" />
 
             <div className="card-overlay-content text-white">
               <h3 className="text-uppercase fw-light mb-4 fw-medium">Sviluppatore Back-End</h3>
-              
             </div>
           </div>
         </div>
         <div className="col-10 col-md-5 mx-auto mb-4">
           <div className="custom-card-wrapper shadow">
-            <img
-              src={BackEnd}
-              className="card-img-bg"
-              alt="Backend"
-            />
+            <img src={BackEnd} className="card-img-bg" alt="Backend" />
 
             <div className="card-overlay-content text-white">
               <h3 className="text-uppercase fw-light mb-4 fw-medium">Sviluppatore Front-End</h3>
@@ -54,20 +40,14 @@ function CosaPuoiTrovare() {
           </div>
         </div>
         <div className="col-10 col-md-5 mx-auto mb-4">
-
           <div className="custom-card-wrapper shadow">
-            <img
-              src={DataAnalyst}
-              className="card-img-bg"
-              alt="Data Analyst"
-            />
+            <img src={DataAnalyst} className="card-img-bg" alt="Data Analyst" />
 
             <div className="card-overlay-content text-white">
               <h3 className="text-uppercase fw-light mb-4 fw-medium">Data Analyst</h3>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );
