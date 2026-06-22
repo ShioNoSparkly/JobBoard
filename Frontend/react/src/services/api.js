@@ -9,6 +9,12 @@
 // ============================================================
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000/api";
+// Usa sempre import.meta.env.BASE_URL per puntare alla root del tuo sito
+const jobsUrl = `${import.meta.env.BASE_URL}jobs.json`;
+const citiesUrl = `${import.meta.env.BASE_URL}cities.json`;
+
+// Esempio nel fetch:
+const res = await fetch(jobsUrl);
 
 // Avviso in console se la variabile manca (solo in sviluppo)
 if (!import.meta.env.VITE_API_URL) {
