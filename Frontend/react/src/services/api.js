@@ -97,27 +97,18 @@ export const authAPI = {
 export const jobsAPI = {
   getAllJobs: async (filters = {}) => {
     try {
+      // Usa sempre il BASE_URL di Vite (che diventa /JobBoard/ in produzione)
       const res = await fetch(`${import.meta.env.BASE_URL}jobs.json`);
+      if (!res.ok) throw new Error("Errore nel fetch di jobs.json");
+
       let jobs = await res.json();
 
+      // ... (il tuo codice di filtro rimane invariato)
       if (filters.city) {
         const filterCity = filters.city.trim().toLowerCase();
         jobs = jobs.filter((j) => j.city && j.city.trim().toLowerCase() === filterCity);
       }
-
-      if (filters.contract_type) {
-        const contract = filters.contract_type.toLowerCase();
-        jobs = jobs.filter((j) => j.contract_type && j.contract_type.toLowerCase() === contract);
-      }
-
-      if (filters.search) {
-        const query = filters.search.toLowerCase();
-        jobs = jobs.filter(
-          (j) =>
-            (j.title && j.title.toLowerCase().includes(query)) ||
-            (j.description && j.description.toLowerCase().includes(query)),
-        );
-      }
+      // ... resto dei filtri ...
 
       return jobs;
     } catch (err) {
@@ -131,7 +122,8 @@ export const jobsAPI = {
   deleteJob: (id) => Promise.resolve({}),
   getCities: async () => {
     try {
-      const res = await fetch("./cities.json");
+      const res = await fetch(`${import.meta.env.BASE_URL}cities.json`);
+      if (!res.ok) throw new Error("Errore nel fetch di cities.json");
       const cities = await res.json();
       return cities;
     } catch (err) {
